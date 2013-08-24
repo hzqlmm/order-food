@@ -1,0 +1,43 @@
+.a_1 a:link {color:#ffffff; text-decoration:none;}
+.a_1 a:visited {color:#ffffff;text-decoration:none;}
+.a_1 a:hover {color:#ffffff; text-decoration:underline;}
+.a_1 a:active {color:#ffffff;}
+
+.a_2 a:link {color:#ff8800; text-decoration:none;}
+.a_2 a:visited {color:#ff8800;text-decoration:none;}
+.a_2 a:hover {color:#ff8800; text-decoration:underline;}
+.a_2 a:active {color:#ff8800;}
+
+/*文本框通用样式*/
+.pTxt1 {font-size: 12px;color: #666666;text-indent: 3px;border-top: 1px solid #b4b4b4;border-right: 1px solid #dfdfdf;border-bottom: 1px solid #dfdfdf;border-left: 1px solid #dfdfdf;background: #f4f4f4 url(input_bk.gif) repeat-x;}
+.pTxt2 {font-size: 12px;color: #ff3300;text-indent: 3px;border-top: 1px solid #b4b4b4;border-right: 1px solid #dfdfdf;border-bottom: 1px solid #dfdfdf;border-left: 1px solid #dfdfdf;background: #ffffff url(input_bk.gif) repeat-x;}
+.pTxt3 {font-size: 12px;color: #666666;text-indent: 3px;border-top: 1px solid #b4b4b4;border-right: 1px solid #dfdfdf;border-bottom: 1px solid #dfdfdf;border-left: 1px solid #dfdfdf;background: #ffffff url(input_bk.gif) repeat-x;}
+.pTxt4 {width:15px;}
+
+.pTxtDate {width:120px;}
+/*文本框统一长度*/
+.pTxtL150{width:150px;height:23px;line-height:23px}
+.pTxtL200{width:200px;height:23px;line-height:23px}
+.pTxtL250{width:250px;height:23px;line-height:23px}
+.pTxtL300{width:300px;height:23px;line-height:23px;font-size:14px}
+.pTxtL400{width:400px;height:23px;line-height:23px}
+.pTxtL500{width:500px;height:23px;line-height:23px}
+.pTxtL20 {width:20px;height:23px;line-height:23px}
+.pTxtL60 {width:60px;height:23px;line-height:23px}
+.pTxtL100 {width:100px;height:23px;line-height:23px}
+/*按钮统一样式*/
+.pBtn{border:0px;height:24px;background:url(bg1.gif) repeat-x;color:#fff;cursor:pointer}
+.pBtn2{border:0px;height:24px;background:url(bg2.gif) repeat-x;color:#fff;cursor:pointer}
+.pSubmit{}
+/*备注统一样式*/
+.pBeta {color:#888888}
+
+.pPage{float:left;height:26px;line-height:26px}
+.pPage li{float:left;padding:0px 8px 0px 8px;margin-right:5px;color:#aaaaaa;overflow:hidden;vertical-align:bottom;font-size:14px}
+.pPage .info{margin-right:20px}
+.pPage .x_sel{font-weight:bold}
+.pPage .x_sel a:link {color: #ff6600; text-decoration:none;padding:3px}
+.pPage .x_sel a:visited {color:#ff6600;text-decoration:none;padding:3px}
+.pPage .x_sel a:hover {color:#000000; text-decoration:none;background:#ff6600;padding:3px}
+.pPage .x_sel a:active {color: #000000; text-decoration:none;padding:3px}
+.pPage .x_txt{height:12px;width:30px}

@@ -1,0 +1,98 @@
+{include(header)}
+<div class="pMenu" id="id_pMenu">
+<!--切换保留数据-->
+<input type="hidden" value="{$get_url_module}" name="url_module">
+{foreach($arr_module as $item=>$key)}
+	<li {if($item==$get_url_module)} class="sel"{/if} onclick="kj.set(':url_module','value','{$item}');admin.refresh();">{$key}</li>
+{/foreach}
+<li onclick="admin.act('print');">打印设置</li>
+{if(cls_config::get("code_mode","base")==1)}
+	<li onclick="master_open({id:'add_config',title:'添加配置',url:'{fun_get::url(array('app_act'=>'edit','id'=>0))}',w:500});" class="x_btn">添加</li>
+{/if}
+</div>
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		{if(cls_config::get("code_mode","base")==1)}
+		<li><span class="x_tit" style="width:40px">排序</span><span class="x_split"></span></li>
+		{/if}
+		{foreach($arr_list["tabtit"] as $item)}
+			<li><span class="x_tit"{if($item["w"]>0)} style="width:{$item["w"]}px"{/if}  onclick="admin.table.list1.sort('{$item['key']}')">{$item["name"]}{if(isset($arr_list['sort'][$item['key']]))}<img src="images/sort_{$arr_list['sort'][$item['key']]}.png">{/if}</span><span class="x_split"></span></li>
+		{/if}
+		{if(cls_config::get("code_mode","base")==1)}
+		<li><span class="x_tit" style="cursor:none;width:100px">操作</span></li>
+		{/if}
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_list['list'] as $item)}
+			<input type="hidden" name="selid[]" value="{$item['config_id']}">
+			<div class='pTabRow'>
+				{if(cls_config::get("code_mode","base")==1)}
+				<li><input type="text" name="config_sort[]" value="{$item["config_sort"]}" style="width:30px"></li>
+				{/if}
+				{foreach($arr_list["tabtd"] as $field)}
+					<li>
+					{if($field == 'config_val')}
+						{if($item["config_type"]=="textarea"||$item["config_type"]=="array")}
+							<textarea name='config_val[]' id='config_val[]' style='width:400px;height:120px' class="autosize">{$item["config_val"]}</textarea>
+						{else if($item["config_type"]=="list")}
+							<select name="config_val[]">
+							{foreach($item["config_list"] as $item2=>$key2)}
+							<option value="{$item2}" {if($item2==$item["config_val"])} selected{/if}>{$key2}</option>
+							{/foreach}
+							</select>
+						{else if($item["config_type"]=="chk")}
+							{foreach($item["config_list"] as $item2=>$key2)}
+							<label><input type="checkbox" name="config_val_{$item['config_id']}[]" value="{$item2}" {if(in_array($item2,$item["config_val"]))} checked{/if}>{$key2}</label>
+							{/foreach}
+							<input type="hidden" name="config_val[]" value="">
+						{else if($item["config_type"]=="bool")}
+							<label><input type="radio" name="config_val_bool_{$item['config_id']}" value="0" checked>否</label> <label><input type="radio" name="config_val_bool_{$item['config_id']}" value="1" {if($item['config_val']=='1')} checked{/if}>是</label>
+							<input type="hidden" name="config_val[]" value="">
+						{else}
+						<input type="input" name="config_val[]" value="{$item['config_val']}" size=40 class="autosize">
+						{/if}
+					{else}
+						{if(empty($item[$field]))}&nbsp;{else}{$item[$field]}{/if}
+					{/if}
+					</li>
+				{/foreach}
+				{if(cls_config::get("code_mode","base")==1)}
+				<li>
+					{if($this_limit->chk_act("edit"))}<input type="button" name="btnedit" value="编辑" onclick="master_open({id:{$item['config_id']},title:'编辑配置',w:500});" class="pBtn">{/if}
+					{if($this_limit->chk_act("del"))}<input type="button" name="btndel" value="注销" onclick="admin.ajax_delete('{fun_get::url(array('app_act'=>'delete','id'=>$item['config_id']))}');" class="pBtn2">{/if}
+				</li>
+			    {/if}
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+<li>{if($this_limit->chk_act("update"))}&nbsp;<input type="button" name="dosubmit" value="更新" onclick="admin.frm_ajax('update');" class="pBtn">{/if}</li>
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+admin.table.list1.init('#id_table_title' , '#id_table');
+});
+//自动保存
+admin.table.list1.save_resize = function() {
+	var lng_w = (kj.w(this.field));
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=save_resize&filename=sys&key=sys.config&index=" + this.fieldsindex + "&w=" + lng_w , function(data){
+		//alert(data);
+	});
+}
+admin.table.list1.sort = function(key) {
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=sort&filename=sys&key=sys.config&sortby=" + key , function(data){
+			var obj_data=kj.json(data);
+			if(!obj_data.isnull) {
+				admin.refresh();
+			}
+	});
+}
+</script>
+{include(footer)}

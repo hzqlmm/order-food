@@ -1,0 +1,114 @@
+<div class="pMenu" id="id_pMenu">
+	<li onclick="admin.act('');"{if($app_act!='dellist')} class="sel"{/if}>管理</li>
+	{if($this_limit->chk_act("dellist"))}<li onclick="admin.act('dellist');"{if($app_act=='dellist')} class="sel"{/if}>回收站</li>{/if}
+	{if($this_limit->chk_act("edit_article"))}<li onclick="master_open({id:'add_config',app_act:'edit_article',title:'添加图片',url:'{fun_get::url(array('app_act'=>'edit_article','id'=>0))}',w:1000});" class="x_btn">添加图片</li>{/if}
+	{if($this_limit->chk_act("edit_folder"))}<li onclick="master_open({id:'add_config',title:'添加相册',url:'{fun_get::url(array('app_act'=>'edit_folder','id'=>0))}',w:500});" class="x_btn">添加相册</li>{/if}
+</div>
+<div class="pMain_1" id="id_pMain_1">
+	<div class="pPath">
+		<div style="float:left;margin-left:10px;display:inline;height:20px;overflow:hidden;line-height:20px;">
+			<span onmouseover="kj.show('#id_channel_select');" onmouseout="kj.hide('#id_channel_select');" style="float:left"><img src="images/folder.gif">&nbsp;</span><span id="id_channel_menu" style="float:left;padding-top:3px"></span><br>
+			<div class="channel_select" id="id_channel_select" style="display:none" onmouseover="kj.show('#id_channel_select');" onmouseout="kj.hide('#id_channel_select');">
+			{foreach($arr_channel as $item)}
+				{if($item['channel_id']==fun_get::get('url_channel_id'))}
+					<li id="channel_val_{$item['channel_id']}" class="x_sel">{$item['channel_name']}</li>
+					<script>
+						kj.obj("#id_channel_menu").innerHTML = '<a href="javascript:thisjs.opendir(\'0\');" style="font-weight:bold;color:#004499">{$item['channel_name']}</a>';
+					</script>
+				{else}
+					<li id="channel_val_{$item['channel_id']}">{$item['channel_name']}</li>
+				{/if}
+			{/foreach}
+			</div>
+		</div>
+		<div style="float:left;padding-top:2px;height:20px;line-height:20px;overflow:hidden">{if(!empty($folder_path))}&nbsp;->&nbsp;{/if}{$folder_path}</div>
+	</div>
+</div>
+<div class="pMain" id="id_main">
+	<div class="article_pic">
+	{if( fun_get::get('url_folder_id') == 0 )}
+		{foreach($arr_dirlist["list"] as $item)}
+			<div class='x_li'><span class="x_pic"><a href="javascript:thisjs.opendir({$item['folder_id']});"><img src="{$item['folder_pic']}" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'"></a></span><span class="x_txt"><a href="common.php?app=article&app_act=folder&id={$item['folder_id']}" target="_blank">{$item['folder_name']}</a></span><span class="x_act"><input type='checkbox' name='selid2[]' value="{$item['folder_id']}">&nbsp;
+				{if($app_act!='dellist')}
+				<input type="button" name="btnedit" value="打开" onclick="thisjs.opendir({$item['folder_id']});" class="pBtn">
+				{if($this_limit->chk_act("edit_folder"))}&nbsp;&nbsp;<input type="button" name="btnedit" value="编辑" onclick="master_open({id:{$item['folder_id']},title:'编辑目录',w:500,app_act:'edit_folder'});" class="pBtn">
+				{/if}
+				{if($this_limit->chk_act("del_folder"))}&nbsp;&nbsp;
+				<input type="button" name="btnedit" value="删除" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=del_folder&fid={$item['folder_id']}'});" class="pBtn2">
+				{/if}
+			{else}
+				{if($this_limit->chk_act("reback_folder"))}&nbsp;&nbsp;
+				<input type="button" name="btnedit" value="还原" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=reback_folder&fid={$item['folder_id']}'});" class="pBtn">
+				{/if}
+			{/if}
+			</span></div>
+		{/foreach}
+	{else}
+		{foreach($arr_list['list'] as $item)}
+			<div class='x_li' style="height:220px"><span class="x_pic"><img src="{$item['article_pic']}" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'" onclick="kj.pic.preview('{$item['article_pic_big']}');"></span><span class="x_act"><input type='checkbox' name='selid[]' value="{$item['article_id']}">&nbsp;
+			{if($app_act!='dellist')}
+				{if($this_limit->chk_act("edit_article"))}
+				<input type="button" name="btnedit" value="编辑" onclick="master_open({id:{$item['article_id']},title:'编辑文章',w:1000,app_act:'edit_article'});" class="pBtn">
+				{/if}
+				{if($this_limit->chk_act("del_article"))}&nbsp;&nbsp;
+				<input type="button" name="btnedit" value="删除" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=del_article&fid={$item['article_id']}'});" class="pBtn2">
+				{/if}
+				&nbsp;&nbsp;<input type="button" name="btnedit" value="浏览" onclick="window.open('common.php?app=article&app_act=view&id={$item['article_id']}','_blank');" class="pBtn">
+			{else}
+				{if($this_limit->chk_act("reback_article"))}&nbsp;&nbsp;
+				<input type="button" name="btnedit" value="还原" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=reback_article&fid={$item['article_id']}'});" class="pBtn">
+				{/if}
+			{/if}
+			</span></div>
+		{/foreach}
+	{/if}
+	</div>
+</div>
+<div class="pPage" id="id_pPage">
+	{if( fun_get::get('url_folder_id') == 0 )}
+		{$arr_dirlist['pagebtns']}
+	{else}
+		{$arr_list['pagebtns']}
+	{/if}
+</div>
+<div class="pFootAct" id="id_pFootAct">
+<li>
+<label><input type='checkbox' name='selall' value='1'>全选</label>　
+	{if( fun_get::get('url_folder_id') == 0 )}
+		<select name="selact">
+			<option value="">--操作--</option>
+			{if($app_act!='dellist')}
+				{if($this_limit->chk_act("del_folder"))}<option value="del_folder">删除</option>{/if}
+			{else}
+				{if($this_limit->chk_act("reback_folder"))}<option value="reback_folder">还原</option>{/if}
+				{if($this_limit->chk_act("delete_folder"))}<option value="delete_folder">彻底删除</option>{/if}
+			{/if}
+			</select>
+			&nbsp;<input type="button" name="dosubmit" value="执行" onclick="admin.selact();" class="pBtn">
+			{if($this_limit->chk_act("paste_folder"))}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="btnCopy" value="复制" onclick="thisjs.copy();" class="pBtn">
+			&nbsp;<input type="button" name="btnCut" value="剪贴" onclick="thisjs.cut();" class="pBtn">
+			&nbsp;<input type="button" name="btnPaste" id="id_btnPaste" value="粘贴" class="pBtn" disabled="true" onclick="thisjs.paste();">{/if}
+	{else}
+		<select name="selact" onchange="thisjs.selact(this.value)">
+			<option value="">--操作--</option>
+			{if($app_act!='dellist')}
+				{if($this_limit->chk_act("state"))}<option value="state">状态设置</option>{/if}
+				{if($this_limit->chk_act("del_article"))}<option value="del_article">删除</option>{/if}
+			{else}
+				{if($this_limit->chk_act("reback_article"))}<option value="reback_article">还原</option>{/if}
+				{if($this_limit->chk_act("delete_article"))}<option value="delete_article">彻底删除</option>{/if}
+			{/if}
+			</select>&nbsp;<span id="id_selact_state" style="display:none">
+			<select name="state_val">
+			{foreach($arr_list['state'] as $item=>$key)}
+			<option value="{$key}">{$item}</option>
+			{/foreach}
+			</select>
+			</span>
+			&nbsp;<input type="button" name="dosubmit" value="执行" onclick="admin.selact();" class="pBtn">
+			{if($this_limit->chk_act("paste_article"))}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="btnCopy" value="复制" onclick="thisjs.copy();" class="pBtn">
+			&nbsp;<input type="button" name="btnCut" value="剪贴" onclick="thisjs.cut();" class="pBtn">
+			&nbsp;<input type="button" name="btnPaste" id="id_btnPaste" value="粘贴" class="pBtn" disabled="true" onclick="thisjs.paste();">{/if}
+	{/if}
+</li>
+</div>

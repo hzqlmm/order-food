@@ -1,0 +1,44 @@
+{include(header)}
+<script>
+//保存时交验规则
+admin.rule['save'] =[
+    { name : 'topic_name' , rule:'empty' , tips:'专题名称不能为空'}
+];
+function templates_callback(info) {
+	kj.dialog.close("#windialog_attatch");
+}
+function upload_callback_small(info)  {
+	var obj = kj.json(info);
+	if('url' in obj) kj.obj("#id_topic_pic").value=obj.url;
+}
+
+</script>
+<div class="pMenu" id="id_pMenu">
+	<li class="sel">专题信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">名&nbsp;&nbsp;称：</td><td class="pTabColVal"><input type="input" name="topic_name" value="{$editinfo['topic_name']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">图&nbsp;&nbsp;片：</td><td class="pTabColVal"><input type="input" name="topic_pic" id="id_topic_pic" value="{$editinfo['topic_pic']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=attatch&url_objid=id_topic_pic',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a><br><iframe name="frm_article_pic" src="common.php?app=other&app_act=upload&callback=upload_callback" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></td></tr>
+<tr>
+	<td class="pTabColName">目录模板：</td><td class="pTabColVal"><input type="input" name="topic_tpl" id="id_topic_tpl" value="{$editinfo['topic_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_topic_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+<tr>
+	<td class="pTabColName">状 态：</td>
+	<td class="pTabColVal">
+		<select name="topic_state">
+		{foreach($arr_state as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['topic_state'])} selected{/if}>{$item}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+{include(footer)}

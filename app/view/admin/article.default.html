@@ -1,0 +1,98 @@
+{include(header)}
+<input type="hidden" name="url_channel_id" value="{fun_get::get('url_channel_id')}" id="id_url_channel_id">
+<input type="hidden" name="url_folder_id" value="{fun_get::get('url_folder_id')}" id="id_url_folder_id">
+<input type="hidden" name="url_about_id" value="{fun_get::get('url_about_id')}" id="id_url_folder_id">
+{if($channel_mode==1)}
+	{include(article.default.pic)}
+{else}
+	{include(article.default.article)}
+{/if}
+
+<script>
+kj.onload(function(){
+	if( 'app_article' in window.parent && (window.parent.app_article.ids || window.parent.app_article.ids_folder) ) {
+		kj.obj("#id_btnPaste").disabled = false;
+	}
+	//频道下拉菜单
+	kj.handler("#id_channel_select li","mouseover",function(){
+		if(this.className == "" ) this.className = "z_sel";
+	});
+	kj.handler("#id_channel_select li","mouseout",function(){
+		if(this.className == "z_sel" ) this.className = "";
+	});
+	kj.handler("#id_channel_select li","click",function(){
+		var cid = this.id.replace("channel_val_",'');
+		kj.set("#id_url_channel_id" , "value" , cid);
+		kj.set("#id_url_folder_id" , "value" , 0);
+		admin.refresh();
+	});
+});
+
+//当前页面js对象
+var thisjs = new function() {
+	this.selact = function(val) {
+		kj.obj("#id_selact_state").style.display = (val == "state") ? "" : "none";
+		kj.obj("#id_selact_topic").style.display = (val == "topic") ? "" : "none";
+	}
+	this.opendir = function(val) {
+		kj.set("#id_url_folder_id","value" , val);
+		admin.refresh();
+	}
+	//取得复制或粘贴信息
+	this.get_copyinfo = function() {
+		if(!('app_article' in window.parent) ) window.parent.app_article = {};
+		var ids = this.get_ids("selid[]");
+		var ids_folder = this.get_ids("selid2[]");
+		if(ids == '' && ids_folder == '') {
+			alert("请选择要复制的文件或目录");
+			return false;
+		}
+		window.parent.app_article.ids = ids;
+		window.parent.app_article.ids_folder = ids_folder;
+		kj.obj("#id_btnPaste").disabled = false;
+		return true;
+	}
+	//复制
+	this.copy = function() {
+		if( this.get_copyinfo() ){
+			window.parent.app_article.pastetype = "copy";
+		}
+	}
+	this.get_ids = function(name) {
+		var o = kj.obj(":" + name);
+		var arr = [];
+		for( var i = 0 ; i < o.length ; i++) {
+			if(o[i].checked) {
+				arr[arr.length] = o[i].value;
+			}
+		}
+		return arr.join(",");
+	}
+	//剪贴
+	this.cut = function() {
+		if( this.get_copyinfo() ){
+			window.parent.app_article.pastetype = "cut";
+		}
+	}
+	//粘贴
+	this.paste = function() {
+		if(!window.parent.app_article) {
+			alert("没有粘贴对象");
+			return;
+		}
+		if(!window.parent.app_article.ids && !window.parent.app_article.ids_folder) {
+			alert("没有粘贴对象");
+			return;
+		}
+		{if($this_limit->chk_act("paste_article") && $this_limit->chk_act("paste_folder"))}
+			var app_act = 'paste_article_folder';
+		{else if($this_limit->chk_act("paste_article"))}
+			var app_act = 'paste_article';
+		{else if($this_limit->chk_act("paste_folder"))}
+			var app_act = 'paste_folder';
+		{/if}
+		admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act='+app_act+'&pastetype=' + window.parent.app_article.pastetype + '&ids=' + window.parent.app_article.ids + '&ids_folder=' + window.parent.app_article.ids_folder + '&channel_id={fun_get::get("url_channel_id")}&folder_id={fun_get::get("url_folder_id")}&about_id={fun_get::get('url_about_id')}'});
+	}
+}
+</script>
+{include(footer)}

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<script src="/common/js/kj.dialog.js"></script>
+<script src="/common/js/kj.ajax.js"></script>
+<style>
+body{background:#fff}
+</style>
+</head>
+<body>
+{if(count($order_list['list'])>0)}
+	{foreach($order_list['list'] as $item=>$key)}
+	<table class="orderlist" align="center">
+	<tr><td colspan=3 class="tit"><font class="txt_redB">{$item}</font>（{fun_get::weekday($item)}）</td></tr>
+		{foreach($key as $order)}
+		<tr><td class="col1">
+		{if($order['order_shop_id']>0)}<a href="index.php?app_act=shop&id={$order['order_shop_id']}" style="color:#888888">{$order_list['shop']['id_'.$order['order_shop_id']]}</a><br>{/if}
+		<font class="txt_orangeB">{$order['addtime']}</font><br>{$order['order_name']}/{$order['order_sex']}</td>
+		<td>
+		{set $i=0}
+		{foreach($order['menu'] as $menu)}
+			<div class="row1"{if($i==0)} style="background:none"{/if}>
+			{set $price=0}
+			<ul class="x1">
+			{set $ii=0}
+			{foreach($menu as $item)}
+				{set $price+=$order_list['price']['id_'.$item]}
+				<li>{if($ii>0)} + {/if}{$order_list['menu']['id_'.$item]['menu_title']}</li>
+				{set $ii++}
+			{/foreach}
+			</ul>
+			<ul class="x2">
+			￥{$price}×{$order['menunum'][implode(',',$menu)]}=￥{$order['menunum'][implode(',',$menu)]*$price}
+			</ul>
+			</div>
+			{set $i++}
+		{/foreach}
+		</td><td class="col2">
+		总计：{$order['order_total']}{if(!empty($order['order_score_money']))}<br>抵扣：{$order['order_score_money']}{/if}{if(!empty($order['order_favorable']))}<br>优惠：{$order['order_favorable']}{/if}<br>应付：<font class="txt_redB">{$order['order_total_pay']}</font>
+		{if($order['order_state'] > 0)}
+		<input type="button" name="btncomment[]" {if($order['order_comment'])}value="已评论" class="button5x"{else}value="评论" class="button5"{/if} onclick="parent.kj.dialog({id:'comment',title:'评论订单',url:'{fun_get::url(array('app_act'=>'comment','order_id'=>$order['order_id']))}',w:500,showbtnhide:false,showbtnmax:false,top:0,type:'iframe'});">
+		{else}
+		<br><font color="#ff0000">({$order['state']})</font>
+		{/if}
+		</td></tr>
+		{/foreach}
+	</table>
+	{/foreach}	
+	<div class="pPage" id="id_pPage" style="margin-top:20px">
+	{$order_list['pagebtns']}
+	</div>
+{else}
+<center>
+	<div class="shop_tips" id="id_shop_tips" style="position:static">
+	<ul>
+	<li><h1><br>还没有您的订单</h1></li>
+	<ul>
+	</div>
+</center>
+{/if}
+
+</body>
+</html>

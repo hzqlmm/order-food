@@ -1,0 +1,100 @@
+{include(header)}
+<input type="hidden" name="url_dirpath" value="{$arr_list['pathdir']}">
+<div class="pMenu" id="id_pMenu">
+	<li onclick="admin.act('');">备份</li>
+	<li class="sel" onclick="admin.act('reback');">还原</li>
+</div>
+{if(isset($get_backupname))}
+<div class="pMain_1" id="id_pMain_1">
+	<div class="pPath">&nbsp;&nbsp;&nbsp;&nbsp;路径：<a href="javascript:admin.act('reback');">根目录</a> -> {$get_backupname}</div>
+</div>
+{/if}
+<div class="pMain" id="id_main">
+{if(!isset($get_backupname))}
+	{foreach($arr_list as $item)}
+		<div class="pli1"><span class='x_left'><img src="images/folder.gif">&nbsp{$item['name']}</span><span class='x_r'><a href="?app={$get_app}&app_module={$get_app_module}&app_act=reback&backupname={$item['name']}">打开</a>&nbsp;<a href="javascript:thisjs.reback('{$item['name']}');">还原</a>&nbsp;<a href="javascript:admin.ajax_url({url:'?app={$get_app}&app_module={$get_app_module}&app_act=del_backup&backupname={$item['name']}'});">删除</a></span></div>
+	{/foreach}
+{else}
+	{foreach($arr_list as $item)}
+		<div class="pli1"><span class='x_left'><img src="images/table.gif">&nbsp{$item['name']}</span><span class='x_r'><a href="javascript:thisjs.reback_fromtable('{$get_backupname}','{$item['name']}');">还原</a>&nbsp;<a href="javascript:admin.ajax_url({url:'?app={$get_app}&app_module={$get_app_module}&app_act=del_table&backupname={$get_backupname}&tablename={$item['name']}'});">删除</a></span></div>
+	{/foreach}
+{/if}
+</div>
+<script src="/common/js/kj.progress.js"></script>
+<script>
+var thisjs = new function() {
+	this.tables = [];
+	this.backupname = '';
+	this.reback = function(name) {
+		if(!confirm("确定要还原吗？")) return;
+		thisjs.backupname = name;
+		kj.ajax.get("?app=database&app_module=sys&app_act=reback_gettable&backupname=" + thisjs.backupname , function(data) {
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("获取还原数据表时失败");
+				return;
+			}
+			for(var i = 0; i < obj_data.length ; i++) {
+				thisjs.tables[thisjs.tables.length] = obj_data[i].name;
+			}
+			kj.progress.show1.open({id:'reback',title:'正在还原:' + thisjs.backupname ,size:thisjs.tables.length,w:500});
+			thisjs.reback_table();
+		});
+	}
+	this.reback_fromtable = function(backupname , table) {
+		if(!confirm("确定要还原吗？")) return;
+		thisjs.tables[thisjs.tables.length] = table;
+		thisjs.backupname = backupname;
+		thisjs.reback_table();
+	}
+	this.reback_table = function() {
+		if( thisjs.tables.length < 0 ) return;
+		if( thisjs.tables.length == 0 ) {
+			kj.progress.show1.close('reback');
+			kj.alert.show("还原完成");
+			return;
+		}
+		var tablename = thisjs.tables[0];
+		thisjs.tables.removeat(0);
+		kj.ajax.get("?app=database&app_module=sys&app_act=reback_table&tablename=" + tablename + "&backupname=" + thisjs.backupname , function(data){
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("还原表[" + tablename + "]失败");
+				return;
+			}
+			obj_data.len = kj.toint(obj_data.len);
+			if( obj_data.len > 0 ) {
+				if(obj_data.len>10) {
+					kj.progress.show1.open({id:'reback_row',title:'还原表:' + tablename ,size:obj_data.len,w:100});
+				}
+				thisjs.reback_row(tablename , 1);
+			} else {
+				thisjs.reback_table();
+			}
+		});
+		kj.progress.show1.step('reback');
+	}
+	this.reback_row = function(tablename , row) {
+		kj.progress.show1.step('reback_row');
+		kj.ajax.get("?app=database&app_module=sys&app_act=reback_row&tablename=" + tablename + "&backupname=" + thisjs.backupname + "&page=" + row , function(data){
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("还原表[" + tablename + "]失败");
+				return;
+			}
+			if(obj_data.code != '0') {
+				('msg' in obj_data && obj_data.msg!='') ? kj.alert(obj_data.msg) : kj.alert("还原表[" + tablename + "]失败");
+				return;
+			}
+			var row = kj.toint(obj_data.next);
+			if( row > 0 ) {
+				thisjs.reback_row(tablename , row);
+			} else {
+				kj.progress.show1.close('reback_row');
+				thisjs.reback_table();
+			}
+		});
+	}
+}
+</script>
+{include(footer)}

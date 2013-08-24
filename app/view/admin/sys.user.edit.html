@@ -1,0 +1,99 @@
+{include(header)}
+<script>
+//保存时交验规则
+admin.rule['save'] =[
+    { name : 'user_type' , rule:'empty' , tips:'所属组不能为空'} ,
+    {if(empty($editinfo['user_id']))}
+		{ name : 'user_name' , rule:'empty' , tips:'用户名不能为空'} ,  
+	    { name : 'user_name' , rule:'!uname' , tips:kj.cfg('rule_uname_tips')} ,
+		{ name : 'user_pwd' , rule:'empty' , tips:'密码不能为空'} ,  
+	{/if}
+    { name : 'user_pwd' , rule:'!pwd&&!empty' , tips:kj.cfg('rule_pwd_tips')} ,
+    { name : 'user_email' , rule:'!email&&!empty' , tips:'邮箱格式不对'} ,
+    { name : 'user_birthday' , rule:'!empty&&!date' , tips:'请输入正确的出生日期'} ,
+    { name : 'user_house_location' , rule:'!empty&&/^.{2,50}$/' , tips:'请填写正确的籍贯信息'} ,
+    { name : 'user_location' , rule:'!empty&&/^.{2,50}$/ig' , tips:'请填写正确的所在地信息'} ,
+    { name : 'user_tel' , rule:'!empty&&!tel' , tips:'请填写正确的电话号码'} ,
+    { name : 'user_mobile' , rule:'!empty&&!mobile' , tips:'请填写正确的手机号码'} ,
+    { name : 'user_address' , rule:'!empty&&/^.{5,50}$/ig' , tips:'请填写完整的详细地址信息'}
+];
+
+</script>
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.edittabel(0);">账号信息</li>
+	<li onclick="admin.edittabel(1);">基本信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">类 型：</td>
+	<td class="pTabColVal">
+		<select name="user_type">
+		{foreach($arr_user_type as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['user_type'])} selected{/if}>{$item}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">管理组：</td>
+	<td class="pTabColVal">
+		{$editinfo["html_group"]}
+	</td></tr>
+<tr>
+	<td class="pTabColName">状 态：</td>
+	<td class="pTabColVal">
+		<select name="user_state">
+		{foreach($arr_user_state as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['user_state'])} selected{/if}>{$item}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">用户名：</td><td class="pTabColVal"><input type="text" name="user_name" value="{$editinfo['user_name']}" class='pTxt1 pTxtL150'{if(!empty($editinfo['user_id']))} disabled{/if}>{if(!empty($editinfo['user_id']))}&nbsp;&nbsp;<span class="pBeta">不能修改</span>{/if}</td></tr>
+<tr>
+	<td class="pTabColName">密&nbsp;&nbsp;码：</td><td class="pTabColVal"><input type="password" name="user_pwd" value="" class='pTxt1 pTxtL150'>{if(!empty($editinfo['user_id']))}&nbsp;&nbsp;<span class="pBeta">为空则不修改密码</span>{/if}</td>
+	</tr>
+<tr>
+	<td class="pTabColName">邮&nbsp;&nbsp;箱：</td><td class="pTabColVal"><input type="input" name="user_email" value="{$editinfo['user_email']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">昵&nbsp;&nbsp;称：</td><td class="pTabColVal"><input type="input" name="user_netname" value="{$editinfo['user_netname']}" class='pTxt1 pTxtL150'></td></tr>
+</table>
+<!--label 1 end-->
+<!--label 2 start-->
+<table class='pEditTable' style='display:none'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">所属部门：</td>
+	<td class="pTabColVal">
+		{$editinfo["html_depart"]}
+	</td></tr>
+<tr>
+	<td class="pTabColName">姓名：</td><td class="pTabColVal"><input type="input" name="user_realname" value="{$editinfo['user_realname']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">性别：</td><td class="pTabColVal">
+	<select name='user_sex'>
+	<option value=''></option>
+	<option value='1'{if($editinfo['user_sex']==1)} selected{/if}>男</option>
+	<option value='2'{if($editinfo['user_sex']==2)} selected{/if}>女</option></select></td></tr>
+<tr>
+	<td class="pTabColName">出生日期：</td><td class="pTabColVal"><input type="input" name="user_birthday" value="{$editinfo['user_birthday']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">籍贯：</td><td class="pTabColVal"><input type="input" name="user_house_location" value="{$editinfo['user_house_location']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">所在地：</td><td class="pTabColVal"><input type="input" name="user_location" value="{$editinfo['user_location']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">电话：</td><td class="pTabColVal"><input type="input" name="user_tel" value="{$editinfo['user_tel']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">手机：</td><td class="pTabColVal"><input type="input" name="user_mobile" value="{$editinfo['user_mobile']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">详细地址：</td><td class="pTabColVal"><input type="input" name="user_address" value="{$editinfo['user_address']}" class='pTxt1 pTxtL200'></td></tr>
+</table>
+<!--label 2 end-->
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+{include(footer)}

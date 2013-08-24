@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户配置</title>
+<meta name="keywords" content="" />
+<meta name="description" content=" 由克网站程序  - XXGO.NET" />
+<meta name="generator" content="klkkdj! 2.0.0" />
+<meta name="author" content="klkkdj!由克" />
+<meta name="copyright" content="2009-2012 XXGO NET" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+<link rel="stylesheet" type="text/css" href="/webcss/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/webcss/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="/webcss/admin/images/css.css"/>
+<script src="<?php echo cls_config::get("dirpath","base");?>/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/webcss/common/js/kj.js"></script>
+<script src="/webcss/common/js/kj.rule.js"></script>
+<script src="/webcss/common/js/kj.ajax.js"></script>
+<script src="/webcss/common/js/kj.dialog.js"></script>
+<script src="/webcss/common/js/kj.alert.js"></script>
+<script src="/webcss/common/js/kj.table.js"></script>
+<script src="/webcss/common/js/date.js"></script>
+<script src="/webcss/admin/admin.js"></script>
+<style>
+body{overflow:hidden}
+.me_table{width:100%;}
+.me_table{text-align:left;padding-left:10px}
+</style>
+<script>
+	kj.onload(function(){
+		inc_resize();
+		var table = kj.obj("#id_me_table");
+		for(var i = 0 ; i < table.rows.length ; i++ ) {
+			thisjs.disableSelection(table.rows[i].cells[1]);
+		}
+	}
+	);
+	//浏览器改变大小时调整大小
+	kj.onresize(function() {
+		inc_resize();
+	});
+	//框架宽高自适应
+	function inc_resize() {
+		if(kj.obj("#id_frame_main")){
+			return;
+		}
+		var obj_table = kj.obj('#id_table');
+		var lng_h = 0;
+		if(kj.obj('#id_pMenu'))	lng_h += kj.h('#id_pMenu');
+		if(kj.obj('#id_pPage'))	lng_h += kj.h('#id_pPage');
+		if(kj.obj('#id_pFootAct'))	lng_h += kj.h('#id_pFootAct');
+		if(kj.obj('#id_pMain_1'))	lng_h += kj.h('#id_pMain_1');
+		var arr = kj.obj('.btnMenuDiv');
+		for(var i = 0; i<arr.length; i++) {
+			if(arr[i] && arr[i].style.display!='none')	lng_h += kj.h(arr[i]);
+		}
+
+		kj.h("#id_main" , document.documentElement.clientHeight - lng_h);
+		kj.w("#id_main" , document.documentElement.clientWidth-10);
+		if( kj.obj("#id_table_box") ) {
+			var list_h = document.documentElement.clientHeight - lng_h - kj.h("#id_table_title") -15;
+			kj.h("#id_table_list" , list_h);
+			if(admin.table.list1 && admin.table.list1.w > document.documentElement.clientWidth-10) {
+				//kj.w("#id_table_list" , admin.table.list1.w);
+			} else {
+				kj.w("#id_table_list" , document.documentElement.clientWidth-10);
+			}
+			//kj.w("#id_table" , document.documentElement.clientWidth-30);
+			//当表表超出框架时，自滚动条样式
+			var h1=kj.h("#id_table");
+			if( list_h < h1 ) {
+				kj.set("#id_table_list","style.overflowY","scroll");
+			}
+			kj.handler("#id_y_li li","mouseout",function(){
+				if(this.className == "z_sel" ) this.className = "";
+			});
+		} else {
+			//编辑页时默认显示滚动条
+			kj.set("#id_main","style.overflowY","scroll");
+		}
+	}
+	var thisjs = new function() {
+		this.rowindex = -1;
+		this.mouseover = function(o) {
+			kj.addClassName(o,'pRowMove');
+			var i = o.rowIndex,ii;
+			if( i!= this.rowindex && this.rowindex>0) {
+				var table = kj.obj("#id_me_table");
+				var perms1 = [];
+				perms1[perms1.length] = {'attribute':{'innerHTML':table.rows[this.rowindex].cells[0].innerHTML}};
+				perms1[perms1.length] = {'attribute':{'innerHTML':table.rows[this.rowindex].cells[1].innerHTML}};
+				perms1[perms1.length] = {'attribute':{'innerHTML':table.rows[this.rowindex].cells[2].innerHTML}};
+				if(i>this.rowindex) {
+					var row = kj.table.row_insert("#id_me_table",perms1,'',i+1);
+					kj.table.row_del("#id_me_table",this.rowindex);
+				} else {
+					kj.table.row_insert("#id_me_table",perms1,'',i);
+					kj.table.row_del("#id_me_table",i+2);
+				}
+				this.rowindex = i;
+				//添加事件
+				kj.handler(table.rows[i] , "mouseover" , function(){
+					thisjs.mouseover(this);
+				});
+				kj.handler(table.rows[i] , "mouseout" , function(){
+					kj.delClassName(this,'pRowMove');
+				});
+				kj.handler(table.rows[i] , "mousedown" , function(){
+					thisjs.mousedown(this);
+				});
+				kj.handler(table.rows[i] , "mouseup" , function(){
+					thisjs.mouseup(this);
+				});
+				thisjs.disableSelection(table.rows[i].cells[1]);
+
+			}
+		}
+		this.mousedown = function(o) {
+			this.rowindex = o.rowIndex;
+			var table = kj.obj("#id_me_table");
+			table.style.cursor = "move";
+		}
+		this.mouseup = function(o) {
+			this.rowindex = -1;
+			var table = kj.obj("#id_me_table");
+			table.style.cursor = "default";
+		}
+		this.disableSelection = function (target){
+			if (typeof target.onselectstart!="undefined") //IE route
+				target.onselectstart=function(){return false}
+			else if (typeof target.style.MozUserSelect!="undefined") //Firefox route
+				target.style.MozUserSelect="none"
+			else //All other route (ie: Opera)
+				target.onmousedown=function(){return false}
+		}
+	}
+</script>
+</head>
+</head>
+<body scroll="no">
+<a name="hash_start" style="float:left"></a>
+<form name="frm_main" action="?" method="post">
+<input type="hidden" value="<?php echo $get_key;?>" name="key">
+<input type="hidden" value="<?php echo fun_get::get('dir');?>" name="dir">
+<input type="hidden" value="<?php echo fun_get::get('filename');?>" name="filename">
+<div class="pMain" id="id_main">
+<table class="me_table" id="id_me_table">
+	<tr>
+		<td width=50>选择</td>
+		<td>名称</td>
+		<td>宽度(px)</td>
+	</tr>
+	<?php foreach($arr_fields as $item=>$key){ ?>
+	<tr onmouseover="thisjs.mouseover(this);" onmouseout="kj.delClassName(this,'pRowMove');" onmousedown="thisjs.mousedown(this);"  onmouseup="thisjs.mouseup(this);">
+		<td><input type='hidden' name='name[]' value="<?php echo $key['key'];?>"><input type='checkbox' name='is_show[]' value="<?php echo $key['key'];?>"<?php if($key["val"]==1){?> checked<?php }?>></td>
+		<td><?php echo $key['name'];?></td>
+		<td><input type="text" name="w_<?php echo $key['key'];?>" value="<?php echo $key['w'];?>" class="pTxt1" size=10></td>
+	</tr>
+	<?php }?>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+</div>
+<div style="display:none">
+<!-- hidden 不支持 reset() 所以用  display:none 方法-->
+<input type="text" name="app_module" value="<?php echo $app_module;?>">
+<input type="text" name="app" value="<?php echo $app;?>">
+<input type="text" name="app_act" value="<?php echo $app_act;?>">
+<input type="text" name="app_ajax" value="">
+<input type="text" name="page" value="">
+</div>
+</form>
+</body></html>

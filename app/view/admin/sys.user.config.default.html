@@ -1,0 +1,36 @@
+{include(header)}
+<input type="hidden" value="{$get_key}" name="key">
+<input type="hidden" value="{fun_get::get('filename')}" name="filename">
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:50px">选择</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:150px">名称</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px">宽度(px)</span></li>
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_fields as $item=>$key)}
+			<div class='pTabRow'>
+				<li><input type='checkbox' name='name[]' value="{$key['key']}"{if($key["val"]==1)} checked{/if}></li>
+				<li>{$key['name']}</li>
+				<li><input type="text" name="w_{$key['key']}" value="{$key['w']}" class="pTxt1" size=10></li>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+admin.table.list1.init('#id_table_title' , '#id_table');
+});
+</script>
+{include(footer)}

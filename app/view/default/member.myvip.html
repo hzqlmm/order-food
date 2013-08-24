@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<script src="/common/js/kj.page.js"></script>
+<style>
+body{background:#fff}
+</style>
+</head>
+<body style="overflow-x:hidden">
+<div class="myvip">
+	<div class="info">尊敬的菜菜会员：<font class="txt_orangeB">{$this_login_user->uname}</font> ，您的会员等级：<img src="images/vip{$loginuser_level}.png" align="absmiddle">。<br>您现在累计的经验值为：<font class="txt_redB">{$loginuser_experience}</font> 点，仅需 <font class="txt_redB">{$loginuser_experience_poor}</font> 点经验值，即可晋升为<font class="txt_orangeB"> V{$loginuser_level_next} </font>会员。</div>
+	<div class="process">
+		<li style="width:{$progress}px;">{$loginuser_experience} <img src="images/Vip_arr.png" align="absmiddle"></li>
+	</div>
+	<div class="process1"></div>
+	<div class="process2">
+		<span style="width:86px;">(<font class="txt_red">0</font>)</span>
+		<span style="width:102px;">(<font class="txt_red">100</font>)</span>
+		<span style="width:100px;">(<font class="txt_red">300</font>)</span>
+		<span style="width:115px;">(<font class="txt_red">800</font>)</span>
+		<span style="width:120px;">(<font class="txt_red">2000</font>)</span>
+		<span style="width:100px;">(<font class="txt_red">5000</font>)</span>
+		<span style="width:57px; text-align:right;">(<font class="txt_red">10000</font>)</span>
+	</div>
+	<div class="tit">
+		<span style="width:150px;">时间</span>
+		<span style="width:100px;">收入(点)</span>
+		<span style="width:100px;">经验累积(点)</span>
+		<span style="width:330px;">详情</span>
+	</div>
+	{set $experience=0}
+	{foreach($action_list["list"] as $item)}
+	<div class="list">
+		<span class="x1">{$item["action_addtime"]}</span>
+		<span class="x2">+{$item["action_experience"]}</span>
+		<span class="x3">{$action_list["experience"]-$experience}</span>
+		<span class="x4">{$item["beta"]}</span>
+		{set $experience+=$item["action_experience"]}
+	</div>
+	{/foreach}
+</div>
+<div class="pPage" id="id_pPage" style="margin-top:20px">
+{$action_list['pagebtns']}
+</div>
+</body>
+</html>

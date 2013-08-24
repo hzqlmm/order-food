@@ -1,0 +1,38 @@
+{include(header)}
+<div class="pMain" id="id_main">
+	<div class="pLayer" id="id_layer">
+	{foreach($menu_list as $item => $key)}
+	<li>
+		<span class="padding_1">&nbsp;<input type="hidden" name="" value="1"></span>
+		<span class="xx_1" style="font-weight:bold">{$item}</span>
+		</li>
+		{foreach($key as $next)}
+		<li>
+			<span class="padding_1" style="width:50px">&nbsp;<input type="hidden" name="" value="2"></span>
+			<span class="xx_1"><label><input type="checkbox" name="appid[]" value="{$next['key']}||{$next['name']}">&nbsp;{$next['name']}</label></span></li>
+		{/foreach}
+	{/foreach}
+	</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+<li>
+{if($this_limit->chk_act("update"))}&nbsp;<input type="button" name="dosubmit" value="添加" onclick="thisjs.add();" class="pBtn">{/if}
+</li>
+</div>
+<script>
+var thisjs = new function() {
+	this.add = function() {
+		var arr = kj.obj(":appid[]");
+		var arr_id = [];
+		var x;
+		for(var i = 0 ; i < arr.length ; i++ ) {
+			if(arr[i].checked) {
+				x = arr[i].value.split("||");
+				arr_id[arr_id.length] = {'key':x[0] , 'name':x[1]};
+			}
+		}
+		parent.thisjs.callback_sel(arr_id);
+	}
+}
+</script>
+{include(footer)}

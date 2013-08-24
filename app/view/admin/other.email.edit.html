@@ -1,0 +1,176 @@
+{include(header)}
+<style>
+.me_div1{float:left;width:500px}
+.me_div1 li{line-height:25px;float:left;width:500px;padding-bottom:10px}
+.me_div2{float:left;clear:both}
+</style>
+<script>
+//保存时交验规则
+admin.rule['save'] =[];
+
+</script>
+<input name="email_type" type="hidden" value="{fun_get::get('url_type')}">
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.edittabel(0);">基本信息</li>
+	<li onclick="admin.edittabel(1);">附件信息</li>
+	<li onclick="admin.edittabel(2);">发件箱信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">收件箱来源：</td>
+	<td class="pTabColVal">
+		{foreach($arr_account_mode as $item=>$key)}
+			<label><input type="radio" name="email_account_mode" value="{$key}"{if($key==$editinfo['email_account_mode'])} checked{/if} onclick="thisjs.mode(this.value);">{$item}</label>
+		{/foreach}
+	</td></tr>
+<tr{if($editinfo['email_account_mode'] != 0)} style="display:none"{/if} id="id_row_mode_0">
+	<td class="pTabColName">收件箱：</td>
+	<td class="pTabColVal"><textarea name="email_to" cols=90 rows=3>{$editinfo['email_to']}</textarea></td></tr>
+<tr{if($editinfo['email_account_mode'] != 1)} style="display:none"{/if} id="id_row_mode_1">
+	<td class="pTabColName">收件箱目录：</td>
+	<td class="pTabColVal"><input type="text" name="email_account_dir" value="{$editinfo['email_account_dir']}" class='pTxt1 pTxtL300'>&nbsp;&nbsp;<span class="pBeta">相对路径，从根目录起以 "/" 开始</span></td></tr>
+<tr{if($editinfo['email_account_mode'] != 2)} style="display:none"{/if} id="id_row_mode_2">
+	<td class="pTabColName">用户条件：</td>
+	<td class="pTabColVal" style="line-height:25px">
+	注册时间：<input type="text" id="userinfo_regtime1" name="userinfo_regtime1" value="{$editinfo['email_userinfo']['regtime1']}" class='pTxt1 pTxtL100' onfocus="new Calendar().show(this);"> 到 <input type="text" name="userinfo_regtime2" id="userinfo_regtime2" value="{$editinfo['email_userinfo']['regtime2']}" class='pTxt1 pTxtL100' onfocus="new Calendar().show(this);">　登录时间：<input type="text" id="userinfo_logintime1" name="userinfo_logintime1" value="{$editinfo['email_userinfo']['logintime1']}" class='pTxt1 pTxtL100' onfocus="new Calendar().show(this);"> 到 <input type="text" id="userinfo_logintime2"  name="userinfo_logintime2" value="{$editinfo['email_userinfo']['logintime2']}" class='pTxt1 pTxtL100' onfocus="new Calendar().show(this);"><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;类　型：<select name="userinfo_type" id="userinfo_type">
+	<option value="">不限</option>
+	{foreach($arr_user_type as $item=>$val)}
+		{if($editinfo['email_userinfo']['type']==$val)}
+		<option value='{$val}' selected>{$item}</option>";
+		{else}
+		<option value='{$val}'>{$item}</option>";
+		{/if}
+	{/foreach}
+	</select><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;状　态：<select name="userinfo_state" id="userinfo_state">
+	<option value="-999">不限</option>
+	{foreach($arr_user_state as $item=>$val)}
+		{if($editinfo['email_userinfo']['state']==$val)}
+		<option value='{$val}' selected>{$item}</option>";
+		{else}
+		<option value='{$val}'>{$item}</option>";
+		{/if}
+	{/foreach}
+	</select><br>
+	&nbsp;&nbsp;关 键 字：<input type="text" id="userinfo_key" name="userinfo_key" value="{$editinfo['email_userinfo']['key']}" class='pTxt1 pTxtL100'>&nbsp;<input type="button" name="btn_userinfo_view" value="预览" onclick="thisjs.userinfo_view();" class="pBtn">
+	</td></tr>
+<tr>
+	<td class="pTabColName">标&nbsp;&nbsp;题：</td><td class="pTabColVal"><input type="text" name="email_title" value="{$editinfo['email_title']}" class='pTxt1 pTxtL300'></td></tr>
+<tr>
+	<td class="pTabColName">内&nbsp;&nbsp;容：</td><td class="pTabColVal"><textarea name="email_cont" id="email_cont" cols="60" rows="5" style="display:none">{$editinfo['email_cont']}</textarea>{fun_get::editor('email_cont','admin',0,300)}</td></tr>
+</table>
+<table class='pEditTable' style="margin-top:0px;display:none">
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">附件列表：</td><td class="pTabColVal">
+	<div class="me_div1" id="id_slide1">
+	<li style="display:none">
+	附件：<input type="input" name="email_attachment[]" id="url_THISID" value="" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择附件',url:'common.php?app=other&app_act=attatch&url_objid=url_THISID',w:600,showbtnhide:false,top:0,type:'iframe'});">选择</a>&nbsp;&nbsp;[<a href="javascript:kj.remove('#THISID');">删除</a>]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<iframe name="frm_THISID" src="common.php?app=other&app_act=upload" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></li>
+	{foreach($editinfo['email_attachment'] as $key=>$item)}
+	<li id="id_slide_{$key}">
+	附件：<input type="input" name="email_attachment[]" id="id_slide1_{$key}" value="{$item}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择附件',url:'common.php?app=other&app_act=attatch&url_objid=id_slide1_{$key}',w:600,showbtnhide:false,top:0,type:'iframe'});">选择</a>&nbsp;&nbsp;[<a href="javascript:kj.remove('#id_slide_{$key}');">删除</a>]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<iframe name="frm_slide1_{$key}" src="common.php?app=other&app_act=upload" width="300px" height="30px" frameborder=0 scrolling="no"></iframe>	
+	</li>
+	{/foreach}
+	</div>
+	<div class="me_div2"><input type="button" name="btn_slide_add" value="添加" onclick="thisjs.slide1_add();"></div>
+	</td>
+	</tr>
+</table>
+<table class='pEditTable' style="margin-top:0px;display:none">
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">配置信息：</td><td class="pTabColVal"><label><input type="radio" name="serverinfo_type" value="0" checked onclick="thisjs.serverinfo_type(this.value);">默认</label>&nbsp;&nbsp;<label><input type="radio" name="serverinfo_type" value="1" {if($editinfo['email_serverinfo']['type']==1)}checked{/if} onclick="thisjs.serverinfo_type(this.value);">自定义</label></td>
+	</tr>
+<tr>
+	<td class="pTabColName">服务器地址：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_host" value="{$editinfo['email_serverinfo']['host']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['host']}</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">端口号：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_port" value="{$editinfo['email_serverinfo']['port']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['port']}</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">发件箱：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_from" value="{$editinfo['email_serverinfo']['from']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['from']}</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">发件人：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_fromname" value="{$editinfo['email_serverinfo']['fromname']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['fromname']}</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">发件箱账号：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_username" value="{$editinfo['email_serverinfo']['username']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['username']}</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">发件箱密码：</td><td class="pTabColVal"><span class="serverinfo_1"{if($editinfo['email_serverinfo']['type']==0)} style="display:none"{/if}><input type="text" name="serverinfo_password" value="{$editinfo['email_serverinfo']['password']}" class='pTxt1 pTxtL300'></span><span class="serverinfo_0"{if($editinfo['email_serverinfo']['type']==1)} style="display:none"{/if}>{$serverinfo['password']}</span></td>
+	</tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="thisjs.get_cont();admin.frm_ajax('save' , function(data){ if(data.code==0) thisjs.clear_cont();});" class="pBtn">
+	</li>
+</div>
+<script>
+var thisjs = new function() {
+	this.userinfo_view = function() {
+		var arr = [];
+		arr[arr.length] = "s_regtime1=" + kj.obj("#userinfo_regtime1").value;
+		arr[arr.length] = "s_regtime2=" + kj.obj("#userinfo_regtime2").value;
+		arr[arr.length] = "s_logintime1=" + kj.obj("#userinfo_logintime1").value;
+		arr[arr.length] = "s_logintime2=" + kj.obj("#userinfo_logintime2").value;
+		arr[arr.length] = "s_regtime1=" + kj.obj("#userinfo_regtime1").value;
+		arr[arr.length] = "s_type=" + kj.obj("#userinfo_type").value;
+		arr[arr.length] = "s_key=" + kj.obj("#userinfo_key").value;
+		arr[arr.length] = "s_state=" + kj.obj("#userinfo_state").value;
+		var url = kj.urlencode("?app_module=sys&app=user",arr);
+		master_open({'url':url,title:'预览用户',w:800});
+	}
+	this.slide1_add = function(){
+		var arr = kj.obj("#id_slide1 li");
+		if(!arr) return;
+		if( !('length' in arr) || arr.length < 1 ) return;
+
+		var obj_div = document.createElement("li");
+		var str_id = "id" + Math.random();
+		str_id = str_id.replace(/\./g, "");
+		obj_div.id = str_id;
+		obj_div.className = arr[0].className;
+		obj_div.innerHTML = arr[0].innerHTML.replace(/THISID/g,obj_div.id);
+		kj.obj("#id_slide1").appendChild(obj_div);
+	}
+	//因为这里用ajax，fckeditor不会取到内容，所以自己取
+	this.get_cont = function() {
+		var fckeditor = FCKeditorAPI.GetInstance('email_cont');
+		kj.obj("#email_cont").value = fckeditor.GetHTML(); //这就是内容
+	}
+	//ajax 提交后，还得清空内容
+	this.clear_cont = function() {
+		//只有当添加时才要清空
+		{if(empty($editinfo['email_id']))}
+			var fckeditor = FCKeditorAPI.GetInstance('email_cont');
+			fckeditor.EditorDocument.body.innerHTML="";
+		{/if}
+	}
+	//选择收件箱来源模式
+	this.mode = function(val) {
+		kj.obj("#id_row_mode_0").style.display = (val == 0)? '' : "none";
+		kj.obj("#id_row_mode_1").style.display = (val == 1)? '' : "none";
+		kj.obj("#id_row_mode_2").style.display = (val == 2)? '' : "none";
+	}
+	//选择发件箱服务器模式
+	this.serverinfo_type = function(val) {
+		if(val == 0) {
+			kj.show(".serverinfo_0");
+			kj.hide(".serverinfo_1");
+		} else {
+			kj.show(".serverinfo_1");
+			kj.hide(".serverinfo_0");
+		}
+	}
+}
+kj.onload(function(){
+});
+function attatch_callback() {
+	kj.dialog.close("#windialog_attatch");
+}
+</script>
+{include(footer)}

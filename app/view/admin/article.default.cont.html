@@ -1,0 +1,105 @@
+<div class="pMenu" id="id_pMenu">
+	<li class="sel">管理</li>
+	{if($this_limit->chk_act("edit_article"))}<li onclick="master_open({id:'add_config',app_act:'edit_article',title:'添加文章',url:'{fun_get::url(array('app_act'=>'edit_article','id'=>0))}',w:1000});" class="x_btn">添加文章</li>{/if}
+</div>
+{if($app_act=='default')}
+<div class="pMain_1" id="id_pMain_1">
+	<div class="pPath">
+		<div style="float:left;margin-left:10px;display:inline;height:20px;overflow:hidden;line-height:20px;">
+			<span onmouseover="kj.show('#id_channel_select');" onmouseout="kj.hide('#id_channel_select');" style="float:left"><img src="images/folder.gif">&nbsp;</span><span id="id_channel_menu" style="float:left;padding-top:3px"></span><br>
+			<div class="channel_select" id="id_channel_select" style="display:none" onmouseover="kj.show('#id_channel_select');" onmouseout="kj.hide('#id_channel_select');">
+			{foreach($arr_channel as $item)}
+				{if($item['channel_id']==fun_get::get('url_channel_id'))}
+					<li id="channel_val_{$item['channel_id']}" class="x_sel">{$item['channel_name']}</li>
+					<script>
+						kj.obj("#id_channel_menu").innerHTML = '<a href="javascript:thisjs.opendir(\'0\');" style="font-weight:bold;color:#004499">{$item['channel_name']}</a>';
+					</script>
+				{else}
+					<li id="channel_val_{$item['channel_id']}">{$item['channel_name']}</li>
+				{/if}
+			{/foreach}
+			</div>
+		</div>
+		<div style="float:left;padding-top:2px;height:20px;line-height:20px;overflow:hidden">{if(!empty($folder_path))}&nbsp;->&nbsp;{/if}{$folder_path}</div>
+	</div>
+	
+</div>
+{/if}
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<!--目录浏览方式-->
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:25px">&nbsp;</span></li>
+		<li><span class="x_tit" style="width:600px">名称</span></li>
+		<li><span class="x_tit" style="cursor:none;width:200px">操作</span></li>
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_dirlist as $item)}
+			<div class='pTabRow'>
+				<li><input type='checkbox' name='selid2[]' value="{$item['folder_id']}"></li>
+				<li><img src="images/folder.gif">&nbsp;&nbsp;<a href="common.php?app=article&app_act=folder&id={$item['folder_id']}" target="_blank">{$item["folder_name"]}</a></li>
+				<li>
+					{if($app_act!='dellist')}
+						<input type="button" name="btnedit" value="打开" onclick="thisjs.opendir({$item['folder_id']});" class="pBtn">
+						{if($this_limit->chk_act("edit_folder"))}
+						<input type="button" name="btnedit" value="编辑" onclick="master_open({id:{$item['folder_id']},title:'编辑目录',w:500,app_act:'edit_folder'});" class="pBtn">
+						{/if}
+						{if($this_limit->chk_act("del_folder"))}
+						<input type="button" name="btnedit" value="删除" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=del_folder&fid={$item['folder_id']}'});" class="pBtn2">
+						{/if}
+					{else}
+						{if($this_limit->chk_act("reback"))}
+						<input type="button" name="btnedit" value="还原" onclick="admin.ajax_url({url:'?app={$app}&app_module={$app_module}&app_act=reback&fid={$item['folder_id']}'});" class="pBtn">
+						{/if}
+					{/if}
+				</li>
+			</div>
+			{/foreach}
+			{foreach($arr_list['list'] as $item)}
+			<div class='pTabRow'>
+				<li></li>
+				<li><span style="float:left"><img src="images/file.jpg">&nbsp;&nbsp;<a href="common.php?app=article&app_act=view&id={$item['article_id']}" target="_blank">{$item["article_title"]}</a></span>{if(isset($item['article_topic_id']) && !empty($item['article_topic_id']))}<span style="float:right;padding-right:20px;color:#888888">{$item['article_topic_id']}</span>{/if}</li>
+				<li>
+				{if($app_act!='dellist')}
+					{if($this_limit->chk_act("edit_article"))}
+					<input type="button" name="btnedit" value="编辑" onclick="master_open({id:{$item['article_id']},app_act:'edit_article',title:'编辑文章',w:1000});" class="pBtn">
+					{/if}
+					{if($this_limit->chk_act("del_article"))}<input type="button" name="btnedit" value="删除" onclick="admin.ajax_url({app_act:'del_article',id:'{$item['article_id']}'});" class="pBtn2">{/if}
+				{else}
+					{if($this_limit->chk_act("reback"))}<input type="button" name="btnedit" value="还原" onclick="admin.ajax_url({app_act:'reback',id:'{$item['article_id']}'});" class="pBtn">{/if}
+				{/if}
+				</li>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pPage" id="id_pPage">
+{$arr_list['pagebtns']}
+</div>
+
+<script src="admin.table.js"></script>
+<script>
+
+//初始化表格控件
+kj.onload(function(){
+	admin.table.list1.init('#id_table_title' , '#id_table');
+});
+//自动保存
+admin.table.list1.save_resize = function() {
+	var lng_w = (kj.w(this.field));
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=save_resize&key=article&filename=article&index=" + this.fieldsindex + "&w=" + lng_w , function(data){
+		//alert(data);
+	});
+}
+admin.table.list1.sort = function(key) {
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=sort&key=article&filename=article&sortby=" + key , function(data){
+			var obj_data=kj.json(data);
+			if(!obj_data.isnull) {
+				admin.refresh();
+			}
+	});
+}
+</script>

@@ -1,0 +1,65 @@
+{include(header)}
+<div class="pMenu" id="id_pMenu">
+	<li class="sel">管理</li>
+	<li onclick="admin.menu_display(0);" class = "x_btn">查找</li>
+	<li class="fdpic" onclick="master_open({url:'?app=user.config&app_module=other&key=other.pay',title:'设置字段',w:400});">&nbsp;</li>
+</div>
+<div class="btnMenuDiv" id="id_btnMenuDiv"{if($arr_list['issearch']==0)} style="display:none"{/if}>
+<li>关 键 字：<input type="text" id="s_key" name="s_key" value="{fun_get::get('s_key')}" class='pTxt1'>　<input type="button" name="btn_s_ok" value="查找" class="pBtn" onclick="admin.search();"> 　<input type="button" name="btn_s_clear" value="清空" class="pBtn" onclick="admin.clear_search();"></li>
+</table>
+</div>
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:25px">&nbsp;</span></li>
+		{foreach($arr_list["tabtit"] as $item)}
+			<li><span class="x_tit"{if($item["w"]>0)} style="width:{$item["w"]}px"{/if} onclick="admin.table.list1.sort('{$item['key']}')">{$item["name"]}
+			{if(isset($arr_list['sort'][$item['key']]))}<img src="images/sort_{$arr_list['sort'][$item['key']]}.png">{/if}</span><span class="x_split"></span></li>
+		{/if}
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_list['list'] as $item)}
+			<div class='pTabRow'>
+				<li><input type='checkbox' name='selid[]' value="{$item['menu_id']}"></li>
+				{foreach($arr_list["tabtd"] as $field)}
+					<li>{if(empty($item[$field]))}&nbsp;{else}{$item[$field]}{/if}</li>
+				{/foreach}
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pPage" id="id_pPage">
+{$arr_list['pagebtns']}
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+admin.table.list1.init('#id_table_title' , '#id_table');
+});
+//自动保存
+admin.table.list1.save_resize = function() {
+	var lng_w = (kj.w(this.field));
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=save_resize&key=other.pay&index=" + this.fieldsindex + "&w=" + lng_w , function(data){
+		//alert(data);
+	});
+}
+admin.table.list1.sort = function(key) {
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=sort&key=other.pay&sortby=" + key , function(data){
+			var obj_data=kj.json(data);
+			if(!obj_data.isnull) {
+				admin.refresh();
+			}
+	});
+}
+//当前页面js对象
+var thisjs = new function() {
+	this.selact = function(val) {
+		kj.obj("#id_selact_state").style.display = (val == "state") ? "" : "none";
+	}
+}
+</script>
+{include(footer)}

@@ -1,0 +1,60 @@
+{include(header)}
+<script>
+kj.onload(function(){
+	kj.handler(":channel[]","click",function(){
+		if(this.checked){
+			kj.show("li<<className,/id_"+this.value+"/ig");
+		} else {
+			kj.hide("li<<className,/id_"+this.value+"/ig");
+		}
+	});
+	kj.handler("input<<name,/^all_/ig","click",function(){
+		if(this.checked){
+			kj.set("input<<className,/cls_"+this.value+"_/ig","disabled",true);
+		} else {
+			kj.set("input<<className,/cls_"+this.value+"_/ig","disabled",false);
+		}
+	});
+});
+var thisjs = new function() {
+	this.folder_sel = function(ischeck,str,cid){
+		if(str.substring(0,1) == "0") str = str.substring(2);
+		if(ischeck){
+			kj.show(".id_" + cid + "_" + str);
+		} else {
+			kj.hide(".id_" + cid + "_" + str);
+		}
+	}
+
+}
+</script>
+<style>
+.me_div1{float:left;width:100%;text-align:left;margin-top:20px}
+.me_div1 li{float:left;clear:both;padding:5px 0px 3px 0px}
+</style>
+<div class="pMenu" id="id_pMenu">
+	{foreach($arr_limit_dir as $item=>$key)}
+		<li onclick="admin.refresh_url(['url_limit_dir={$key}','app_act=limit_edit']);">{$item}</li>
+	{/foreach}
+	<li class="sel">文章权限</li>
+	<li onclick="window.open('{fun_get::url(array('app_act'=>'menu'))}','_self');">自定义菜单</li>
+</div>
+<div class="pMain" id="id_main">
+	<div class="me_div1">
+	{foreach($arr_list as $item)}
+		<li><label><input type="checkbox" name="channel[]" value="{$item['channel_id']}"{if(isset($arr_limit['c_' . $item['channel_id']]))} checked{/if}>{$item["channel_name"]}</label></li>
+		{foreach($item['next'] as $item_next)}
+			{if($item_next["isfirst"]==1)}
+			<li style="padding-left:{$item_next['level']}px;{if(!isset($arr_limit['f_' . $item_next['folder_pid']]) && !($item_next['folder_pid']==0 && isset($arr_limit['c_' . $item['channel_id']])))}display:none{/if}" class="id_{$item['channel_id']}{if(!empty($item_next['folder_pids']))}_{$item_next['folder_pids']}{/if}"><label><input type="checkbox" name="all_{$item['channel_id']}_{$item_next['folder_pid']}" value="{$item['channel_id']}{if(!empty($item_next['folder_pids']))}_{$item_next['folder_pids']}{/if}"{if(isset($arr_limit['f_' . $item_next['folder_pid']]['all']) || (empty($item_next['folder_pid']) && isset($arr_limit['c_' . $item['channel_id']]['all'])))} checked{/if} class="cls_{$item['channel_id']}{if(!empty($item_next['folder_pids']))}_{$item_next['folder_pids']}{/if}">全选</label></li>
+			{/if}
+			<li style="padding-left:{$item_next['level']}px;{if(!isset($arr_limit['f_' . $item_next['folder_pid']]) && !($item_next['folder_pid']==0 && isset($arr_limit['c_' . $item['channel_id']])))}display:none{/if}" class="id_{$item['channel_id']}_{$item_next['folder_pids']}"><label><input type="checkbox" name="folder_{$item['channel_id']}[]" value="{$item_next['pids']}" class="cls_{$item['channel_id']}_{if(!empty($item_next['folder_pids']))}{$item_next['folder_pids']}_{/if}" {if(isset($arr_limit['f_' . $item_next['folder_id']]))} checked{/if} onclick="thisjs.folder_sel(this.checked,'{$item_next['pids']}' , {$item['channel_id']});"{if(isset($arr_limit['f_' . $item_next['folder_pid']]['all']) || isset($arr_limit['c_' . $item['channel_id']]['all']))} disabled{/if}>{$item_next["folder_name"]}</label></li>
+		{/foreach}
+	{/foreach}
+	</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('limit_article_save');" class="pBtn">
+	</li>
+</div>
+{include(footer)}

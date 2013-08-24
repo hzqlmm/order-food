@@ -1,0 +1,17 @@
+{include(header)}
+<script>
+function me_fun(obj_data){
+	if('code' in obj_data && obj_data.code=='0') {
+		window.parent.admin.refresh();
+	} else {
+		if("msg" in obj_data && obj_data.msg!='') {
+			alert(obj_data.msg);
+		} else {
+			kj.alert("操作失败");
+		}
+	}
+}
+</script>
+<div style="float:left;padding:10px 0px 0px 10px">{$group_select_html}
+&nbsp;&nbsp;<input type="button" name="dosubmit" value="确定" onclick="admin.frm_ajax('move_save',me_fun);" class="pBtn"></div>
+{include(footer)}

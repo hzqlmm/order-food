@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+</head>
+<body>
+{include(header)}
+<div class="findpwd mg1">
+	<div class="x_div1">
+		<div class="x_div2" id="id_process">
+			<li class="x_sel1">1.输入要找回的账号</li>
+			<li>2.选择找回密码方式</li>
+			<li>3.找回密码</li>
+		</div>
+	</div>
+	<div class="x_div3" id="id_step1">
+		<li><span class="x_1">您的账号：</span><span class="x_2"><input type="text" id="id_uname" name="uname" value="" class="txt1"></span></li>
+		<li><span class="x_1">验 证 码：</span><span class="x_2"><input type="text" id="id_verifycodefindpwd" name="verifycode" value="" class="txt2"></span></li>
+		<li><span class="x_1">&nbsp;</span><span class="x_2" style='color:#888888'>不区分大小写，<a href="javascript:thisjs.verify_pic_refresh();">换一张</a></span></li>
+		<li><span class="x_1">&nbsp;</span><span class="x_2"><img src="{cfg:(web_url,base)}/common.php?app=sys&app_act=verifycode&app_contenttype=img" id="id_verify_picfindpwd" onclick="this.src='{cfg:(web_url,base)}/common.php?app=sys&app_act=verifycode&app_contenttype=img&app_rnd='+Math.random();"></span></li>
+		<li><span class="x_1">&nbsp</span><span class="x_2"><input type="button" name="btn1" value="下一步" class="button4" onclick="thisjs.next();"></span></li>
+	</div>
+	<div class="x_div3" style="display:none" id="id_step2">
+	<form name="frm_2">
+		<li id="id_email" style="display:none"><span class="x_1"></span><span class="x_2"><label><input type="radio" name="method" value="1" id="id_email_radio" onclick="kj.hide('#id_msg_cont');">邮件找回</label></span><span class="pBeta" style="float:left;padding:5px 0px 0px 20px" id="id_email_txt"></span></li>
+		<li id="id_mobile" style="display:none"><span class="x_1"></span><span class="x_2"><label><input type="radio" name="method" value="2" id="id_mobile_radio" onclick="kj.hide('#id_msg_cont');">短信找回</label></span><span class="pBeta" style="float:left;padding:5px 0px 0px 20px" id="id_mobile_txt"></span></li>
+		<li id="id_msg" style="display:none"><span class="x_1"></span><span class="x_2"><label><input type="radio" name="method" value="3" id="id_mobile_radio" onclick="kj.show('#id_msg_cont');">我要申诉</label></span><span class="pBeta" style="float:left;padding:5px 0px 0px 20px" id="id_mobile_txt"></span></li>
+		<li id="id_msg_cont" style="display:none"><span class="x_1"></span><span class="x_2" style='padding-left:20px'>
+			您的姓名：<input type="text" name="name" value="" class="txt1"><br><br>
+			联系电话：<input type="text" name="tel" value="" class="txt1"><br><br>
+			申诉原因：<textarea name="cont" cols="50" rows="5" class="txt3"></textarea>
+		</span></li>
+		<li><span class="x_1">&nbsp</span><span class="x_2"><input type="button" name="btn1" value="下一步" class="button4" onclick="thisjs.next();"></span></li>
+	</form>
+	</div>
+	<div class="x_div3" id="id_mobile_tips" style="display:none">
+		<li><span class="x_1"></span><span class="x_2">请输入您手机收到验证码：<br><br><input type="text" id="id_mobile_key" name="mobile_key" value="" class="txt2"></span></li>
+		<li><span class="x_1">&nbsp</span><span class="x_2"><input type="button" name="btn1" value="确认" class="button4" onclick="thisjs.verify_mobile();">&nbsp;&nbsp;<input type="button" name="btn1" value="重新发送" class="pBtn2" onclick="thisjs.mobile_resend();" id="id_mobile_resend"></span></li>
+	</div>
+	<div class="x_div3" style="display:none;padding-left:30px" id="id_step3">
+	<form name="frm_3">
+		<li>请设置您的新密码：</li>
+		<li><span class="x_1">新 密 码：</span><span class="x_2"><input type="password" name="newpwd" value="" class="txt1"></span></li>
+		<li><span class="x_1">再输入一次：</span><span class="x_2"><input type="password" name="newpwd1" value="" class="txt1"></span></li>
+		<li><span class="x_1">&nbsp</span><span class="x_2"><input type="button" name="btn1" value="确认" class="button4" onclick="thisjs.step3();"></span></li>
+	</form>
+	</div>
+	<table align="center" id="id_success" style="display:none"><tr><td>
+	<div class="tipsright" style="margin-top:20px">
+		<li>恭喜您，新密码设置成功，<a href="javascript:jsheader.showlogin();" style="color:#ff6600">点击登录</a></li>
+	</div>
+	</td></tr></table>
+	<table align="center" id="id_email_tips" style="display:none"><tr><td>
+	<div class="tipsright" style="margin-top:20px">
+		<li id="id_email_tips_cont"></li>
+	</div>
+	</td></tr></table>
+	<table align="center" id="id_msg_tips" style="display:none"><tr><td>
+	<div class="tipsright" style="margin-top:20px">
+		<li>您的申诉已成功提交，我们将尽快审核，并联系您</li>
+		<li><input type="button" name="btn_pay" value="返回首页" class="button2" onclick="window.open('./','_self');"></li>
+	</div>
+	</td></tr></table>
+
+</div>
+<script>
+var thisjs = new function() {
+	this.step = 1;
+	this.method = '';
+	this.timeoutval = 90;
+	this.verify_pic_refresh = function() {
+		kj.obj("#id_verify_picfindpwd").src='{cfg:(web_url,base)}/common.php?app=sys&app_act=verifycode&app_contenttype=img&app_rnd='+Math.random();
+	}
+	this.mobile_resend = function() {
+		var obj = kj.obj("#id_mobile_resend");
+		obj.value = "重新发送(" + this.timeoutval + ")";
+		obj.className = 'pBtn';
+		thisjs.step2();
+	}
+	this.timeout = function(val) {
+		var obj = kj.obj("#id_mobile_resend");
+		obj.value = "重新发送(" + val + ")";
+		val--;
+		if(val < 1) {
+			obj.value = '重新发送';
+			obj.className = 'pBtn';
+		} else {
+			setTimeout("thisjs.timeout("+val+")",1000);
+		}
+	}
+	this.next = function() {
+		if(this.step == 1) {
+			this.step1();
+		} else if(this.step == 2) {
+			this.step2();
+		} else {
+			this.step3();
+		}
+	}
+	this.step2 = function() {
+		var arr = kj.obj(":method");
+		var val = '';
+		for(var i = 0 ; i < arr.length ; i++ ) {
+			if(arr[i].checked) {
+				val = arr[i].value;
+			}
+		}
+		var uname = kj.obj("#id_uname").value;
+		var postdata = {
+			'method':val,
+			'uname':uname
+		}
+		this.method = val;
+		if(val == 3) {
+			postdata.name = document.frm_2.name.value;
+			postdata.tel = document.frm_2.tel.value;
+			postdata.cont = document.frm_2.cont.value;
+			if(postdata.name == '') {
+				alert("请输入您的姓名");
+				document.frm_2.name.focus();
+				return;
+			}
+			if(postdata.tel == '') {
+				alert("请输入您的联系电话");
+				document.frm_2.tel.focus();
+				return;
+			}
+			if(postdata.cont == '') {
+				alert("请输入您的申诉内容");
+				document.frm_2.cont.focus();
+				return;
+			}
+		}
+		kj.ajax.post('?app=ajax&app_act=findpwd_step2&method='+val , postdata , function(data) {
+			var obj_data = kj.json(data);
+			if(obj_data.isnull || !('code' in obj_data)) {
+				alert("操作失败");
+			} else if(obj_data.code!='0') {
+				if('msg' in obj_data) {
+					alert(obj_data.msg);
+				} else {
+					alert('操作失败');
+				}
+			} else {
+				var obj;
+				kj.hide("#id_step2");
+				if(thisjs.method == 2) {//短信验证
+					obj = kj.obj("#id_mobile_resend");
+					obj.value = "重新发送(" + thisjs.timeoutval + ")";
+					thisjs.timeout(thisjs.timeoutval);
+					kj.show('#id_mobile_tips');
+				} else if(thisjs.method == 1) {//邮件验证
+					obj = kj.obj("#id_email_tips_cont");
+					var email = thisjs.get_email_url(thisjs.email);
+					if(email!='') email = "<a href='"+email+"' target='_blank'>立即登录邮箱</a>";
+					obj.innerHTML = '验证信息已发送到'+thisjs.email+',请登录邮箱,按邮件内容提示操作找回密码。' + email;
+					kj.show("#id_email_tips");
+				} else if(thisjs.method == 3) {
+					kj.obj("#id_process").className = "x_div2_2";
+					var arr = kj.obj("#id_process li");
+					arr[2].className = 'x_sel1';
+					kj.show("#id_msg_tips");
+				}
+			}
+		});
+	}
+	this.get_email_url = function(email) {
+		var arr = email.split('@');
+		if(arr.length<2) return '';
+		arr[1] = arr[1].toLocaleLowerCase();
+		switch(arr[1]) {
+			case "126.com":
+				return "http://www.126.com";
+			case "qq.com":
+				return "http://mail.qq.com";
+			case "163.com":
+				return "http://mail.163.com";
+			case "gmail.com":
+				return "https://mail.google.com/";
+			case "yahoo.cn":
+				return "https://edit.bjs.yahoo.com/config/login";
+			case "yahoo.com.cn":
+				return "https://edit.bjs.yahoo.com/config/login";
+			case "hotmail.com":
+				return "http://www.hotmail.com/";
+			case "live.com":
+				return "http://www.hotmail.com/";
+			case "live.cn":
+				return "http://www.hotmail.com/";
+			case "sina.com":
+				return "http://mail.sina.com.cn";
+			case "sina.cn":
+				return "http://mail.sina.com.cn";
+			case "139.com":
+				return "http://mail.10086.cn/";
+			case "tom.com":
+				return "http://mail.tom.com/";
+			case "21cn.com":
+				return "http://mail.21cn.com/";
+			case "sogou.com":
+				return "http://mail.sogou.com/";
+			case "yeah.net":
+				return "http://www.yeah.net/";
+			case "sohu.com":
+				return "http://mail.sohu.com/";
+			case "263.net":
+				return "http://www.263.net/";
+			case "eyou.com":
+				return "http://www.eyou.com/";
+			default:
+				return '';
+		}
+	}
+	this.step1 = function() {
+		var uname = kj.obj("#id_uname").value;
+		var verifycode = kj.obj("#id_verifycodefindpwd").value;
+		kj.ajax.get("?app=ajax&app_act=findpwd_step1&uname="+uname+"&verifycode="+verifycode,function(data){
+			var obj_data = kj.json(data);
+			if(obj_data.isnull) {
+						alert("操作失败");
+			} else {
+				if('code' in obj_data && obj_data.code == '0') {
+					kj.set("#id_email_txt" , "innerHTML" , "将发送验证链接到邮箱" + obj_data.email);
+					kj.set("#id_mobile_txt" , "innerHTML" , "将新密码短信发送到手机" + obj_data.mobile);
+					thisjs.email = obj_data.email;
+					thisjs.mobile = obj_data.mobile;
+					if(obj_data.is_msg == '1') {
+						kj.show("#id_msg");
+						kj.show("#id_msg_cont");
+						kj.obj("#id_mobile_radio").checked = true;
+					}
+					if(obj_data.is_sms == '1' && obj_data.mobile != '') {
+						kj.show("#id_mobile");
+						kj.obj("#id_mobile_radio").checked = true;
+						kj.hide("#id_msg_cont");
+					}
+					if(obj_data.is_email == '1' && obj_data.email != '') {
+						kj.show("#id_email");
+						kj.hide("#id_msg_cont");
+						kj.obj("#id_email_radio").checked = true;
+					}
+					kj.obj("#id_process").className = "x_div2_1";
+					var arr = kj.obj("#id_process li");
+					arr[1].className = 'x_sel1';
+					kj.hide('#id_step1');
+					kj.show('#id_step2');
+					thisjs.step++;
+				} else {
+					if('msg' in obj_data) {
+						alert(obj_data.msg);
+					} else {
+						alert("操作失败");
+					}
+					//验证码错误
+					if('code' in obj_data && obj_data.code == '11') {
+						kj.obj('#id_verifycodefindpwd').focus();
+						thisjs.verify_pic_refresh();
+					}
+				}
+			}
+		});
+	}
+	//手机验证
+	this.verify_mobile = function() {
+		var key = kj.obj("#id_mobile_key").value;
+		var uname = kj.obj("#id_uname").value;
+		kj.ajax.post('?app=ajax&app_act=verify_mobile&key='+key+'&uname='+uname , {} , function(data) {
+			var obj_data = kj.json(data);
+			if(obj_data.isnull || !('code' in obj_data)) {
+				alert("操作失败");
+			} else if(obj_data.code!='0') {
+				if('msg' in obj_data) {
+					alert(obj_data.msg);
+				} else {
+					alert('操作失败');
+				}
+			} else {
+				kj.obj("#id_process").className = "x_div2_2";
+				var arr = kj.obj("#id_process li");
+				arr[2].className = 'x_sel1';
+				kj.hide("#id_mobile_tips");
+				kj.show("#id_step3");
+			}
+		});
+	}
+	//重新设置密码
+	this.step3 = function() {
+		var newpwd = document.frm_3.newpwd.value;
+		var newpwd1 = document.frm_3.newpwd1.value;
+		if(newpwd == '') {
+			alert('请输入新密码');
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		if(newpwd1 == '') {
+			alert('请再一次输入新密码');
+			document.frm_3.newpwd1.focus();
+			return;
+		}
+		if(newpwd1 != newpwd) {
+			alert("两次输入密码不一至");
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		if(!kj.rule.types.pwd(newpwd)) {
+			var str_tips = kj.cfg('rule_pwd_tips');
+			if(str_tips == '') str_tips = '输入新密码格式不正确';
+			alert(str_tips);
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		var uname = kj.obj("#id_uname").value;
+		var key = kj.obj("#id_mobile_key").value;
+		kj.ajax.get('?app=ajax&app_act=findpwd_step3&pwd='+newpwd+"&key=" + key + "&uname=" + uname , function(data) {
+			var obj_data = kj.json(data);
+			if(obj_data.isnull || !('code' in obj_data)) {
+				alert("操作失败");
+			} else if(obj_data.code!='0') {
+				if('msg' in obj_data) {
+					alert(obj_data.msg);
+				} else {
+					alert('操作失败');
+				}
+			} else {
+				kj.hide("#id_step3");
+				kj.show("#id_success");
+			}
+		});
+	}
+}
+</script>
+{include(footer)}
+</body>
+</html>

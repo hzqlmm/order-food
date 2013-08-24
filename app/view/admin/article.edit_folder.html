@@ -1,0 +1,49 @@
+{include(header)}
+<input type="hidden" name="url_channel_id" value="{fun_get::get('url_channel_id')}">
+<script>
+//保存时交验规则
+admin.rule['save'] =[
+    { name : 'folder_name' , rule:'empty' , tips:'目录名称不能为空'}
+];
+function upload_callback_small(info)  {
+	var obj = kj.json(info);
+	if('url' in obj) kj.obj("#id_folder_pic").value=obj.url;
+}
+function templates_callback(info) {
+	kj.dialog.close("#windialog_attatch");
+}
+var thisjs = new function() {
+	this.save_callback = function(data) {
+	}
+}
+</script>
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.edittabel(0);">基本信息</li>
+	<li onclick="admin.edittabel(1);">扩展信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">上&nbsp;&nbsp;级：</td><td class="pTabColVal">{$select_folder}</td></tr>
+<tr>
+	<td class="pTabColName">目&nbsp;&nbsp;录：</td><td class="pTabColVal"><input type="input" name="folder_name" id="id_folder_name" value="{$editinfo['folder_name']}" class='pTxt1 pTxtL150'><span class="pBeta">&nbsp;*</span></td></tr>
+<tr>
+	<td class="pTabColName">链&nbsp;&nbsp;接：</td><td class="pTabColVal"><input type="input" name="folder_url" id="id_folder_url" value="{$editinfo['folder_url']}" class='pTxt1 pTxtL300'></td></tr>
+<tr>
+	<td class="pTabColName">图&nbsp;&nbsp;片：</td><td class="pTabColVal"><input type="input" name="folder_pic" id="id_folder_pic" value="{$editinfo['folder_pic']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=attatch&url_objid=id_folder_pic',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a><br><iframe name="frm_article_pic" src="common.php?app=other&app_act=upload&callback=upload_callback" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></td></tr>
+</table>
+<table class='pEditTable' style='display:none'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">目录模板：</td><td class="pTabColVal"><input type="input" name="folder_tpl" id="id_folder_tpl" value="{$editinfo['folder_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_folder_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+<tr>
+	<td class="pTabColName">文章模板：</td><td class="pTabColVal"><input type="input" name="folder_article_tpl" id="id_folder_article_tpl" value="{$editinfo['folder_article_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_folder_article_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save_folder' , function(data){if('code' in data && data.code==0){thisjs.save_callback(data);}});" class="pBtn">
+	</li>
+</div>
+{include(footer)}

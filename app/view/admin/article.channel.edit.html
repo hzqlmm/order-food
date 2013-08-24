@@ -1,0 +1,62 @@
+{include(header)}
+<script>
+//保存时交验规则
+admin.rule['save'] =[
+    { name : 'channel_name' , rule:'empty' , tips:'频道名称不能为空'}
+];
+function templates_callback(info) {
+	kj.dialog.close("#windialog_attatch");
+}
+</script>
+<div class="pMenu" id="id_pMenu">
+	<li class="sel">频道信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">名&nbsp;&nbsp;称：</td><td class="pTabColVal"><input type="input" name="channel_name" value="{$editinfo['channel_name']}" class='pTxt1 pTxtL150'></td></tr>
+<tr>
+	<td class="pTabColName">模&nbsp;&nbsp;式：</td><td class="pTabColVal">
+	{foreach($arr_mode as $item=>$key)}
+	<label><input type="radio" name="channel_mode" value="{$key}"{if($editinfo['channel_mode']==$key)} checked{/if}>{$item}</label>&nbsp;&nbsp;
+	{/for}
+	</td></tr>
+<tr>
+	<td class="pTabColName">生成HTML：</td><td class="pTabColVal" style="line-height:25px">
+		<input type="checkbox" name="channel_html" value="1" onclick="if(this.checked){kj.show('#id_channel_html');}else{kj.hide('#id_channel_html');}"{if($editinfo['channel_html']==1)} checked{/if}><br>
+		<span id="id_channel_html" {if($editinfo['channel_html']!=1)} style="display:none"{/if}>目录样式：
+		<select name="channel_html_dirstyle">
+		{foreach($arr_dirstyle as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['channel_html_dirstyle'])} selected{/if}>{$item}</option>
+		{/foreach}		
+		</select><br>
+		目录：<input type="input" name="channel_html_dir" value="{$editinfo['channel_html_dir']}" class='pTxt1 pTxtL150'>&nbsp;&nbsp;<span class="pBeta">"/"表示根目录 </span><br>
+		格式：<label><input type="radio" name="channel_html_ext" value="html" checked> html</label> &nbsp;&nbsp;<label><input type="radio" name="channel_html_ext" value="htm"{if($editinfo['channel_html_ext']=='htm')} checked{/if}> htm</label>
+		</span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">状 态：</td>
+	<td class="pTabColVal">
+		<select name="channel_state">
+		{foreach($arr_state as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['channel_state'])} selected{/if}>{$item}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">频道模板：</td><td class="pTabColVal"><input type="input" name="channel_tpl" id="id_channel_tpl" value="{$editinfo['channel_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_channel_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+<tr>
+	<td class="pTabColName">目录模板：</td><td class="pTabColVal"><input type="input" name="channel_folder_tpl" id="id_channel_folder_tpl" value="{$editinfo['channel_folder_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_channel_folder_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+<tr>
+	<td class="pTabColName">文章模板：</td><td class="pTabColVal"><input type="input" name="channel_article_tpl" id="id_channel_article_tpl" value="{$editinfo['channel_article_tpl']}" class='pTxt1 pTxtL300'>&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=templates&url_objid=id_channel_article_tpl',w:400,showbtnhide:false,top:0,type:'iframe'});">选择</a></td></tr>
+<tr>
+	<td class="pTabColName">唯一标识：</td><td class="pTabColVal"><input type="input" name="channel_key" value="{$editinfo['channel_key']}" class='pTxt1 pTxtL150'>&nbsp;<span class='pBeta'>(选填项)</span></td></tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+{include(footer)}

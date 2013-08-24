@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+</head>
+<body>
+{include(header)}
+<div class="findpwd mg1">
+	<div class="x_div1">
+		<div class="x_div2_2" id="id_process">
+			<li class="x_sel1">1.输入要找回的账号</li>
+			<li class="x_sel1">2.选择找回密码方式</li>
+			<li class="x_sel1">3.找回密码</li>
+		</div>
+	</div>
+	{if($info['code']==0)}
+	<div class="x_div3" id="id_success" style="display:none;color:#ff8800;">
+		<div style="float:left;margin-left:200px">恭喜您，新密码设置成功，<a href="?app_act=login">点击登录</a></div>
+	</div>
+	<div class="x_div3" style="padding-left:30px" id="id_step3">
+	<form name="frm_3">
+		<li>请设置您的新密码：</li>
+		<li><span class="x_1">新 密 码：</span><span class="x_2"><input type="password" name="newpwd" value="" class="txt1"></span></li>
+		<li><span class="x_1">再输入一次：</span><span class="x_2"><input type="password" name="newpwd1" value="" class="txt1"></span></li>
+		<li><span class="x_1">&nbsp</span><span class="x_2"><input type="button" name="btn1" value="确 认" class="button4" onclick="thisjs.resetpwd();"></span></li>
+	</form>
+	</div>
+	{else}
+	<div class="x_div3" id="id_msg_tips">
+		<div style="float:left;margin-left:150px;color:#ff0000">{$info['msg']}</div>
+	</div>
+	{/if}
+</div>
+<script>
+kj.onload(function(){
+	kj.handler(".pTxt1","focus",function(){
+		kj.delClassName(this , "pTxt1");
+		kj.addClassName(this , "pTxt2");
+	});
+	kj.handler(".pTxt1","blur",function(){
+		kj.delClassName(this , "pTxt2");
+		kj.addClassName(this , "pTxt1");
+	});
+});
+
+var thisjs = new function() {
+	//重新设置密码
+	this.resetpwd = function() {
+		var newpwd = document.frm_3.newpwd.value;
+		var newpwd1 = document.frm_3.newpwd1.value;
+		if(newpwd == '') {
+			alert('请输入新密码');
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		if(newpwd1 == '') {
+			alert('请再一次输入新密码');
+			document.frm_3.newpwd1.focus();
+			return;
+		}
+		if(newpwd1 != newpwd) {
+			alert("两次输入密码不一至");
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		if(!kj.rule.types.pwd(newpwd)) {
+			var str_tips = kj.cfg('rule_pwd_tips');
+			if(str_tips == '') str_tips = '输入新密码格式不正确';
+			alert(str_tips);
+			document.frm_3.newpwd.focus();
+			return;
+		}
+		kj.ajax.get('?app=ajax&app_act=findpwd_step3&pwd='+newpwd+"&uid={$info['uid']}" , function(data) {
+			var obj_data = kj.json(data);
+			if(obj_data.isnull || !('code' in obj_data)) {
+				alert("操作失败");
+			} else if(obj_data.code!='0') {
+				if('msg' in obj_data) {
+					alert(obj_data.msg);
+				} else {
+					alert('操作失败');
+				}
+			} else {
+				kj.hide("#id_step3");
+				kj.show("#id_success");
+			}
+		});
+	}
+}
+</script>
+{include(footer)}
+</body>
+</html>

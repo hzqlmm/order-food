@@ -1,0 +1,12 @@
+<div class="title w1"><h1>排序<a name="hash_sort"></a></h1>
+<span{if($sortby=='price')} class="sort_{$sortval}"{/if} style="margin-left:20px" onclick="jsshop.sort('price','{if($sortval=='asc')}desc{else}asc{/if}');">按价格</span><span{if($sortby=='comment')} class="sort_{$sortval}"{/if} onclick="jsshop.sort('comment','{if($sortval=='asc')}desc{else}asc{/if}');">按评分</span><span {if($sortby=='sold')}class="sort_{$sortval}"{/if} onclick="jsshop.sort('sold','{if($sortval=='asc')}desc{else}asc{/if}');">按销量</span></div>
+<div class="list w1">
+{foreach($arr_menu['list'] as $menu)}
+	<ul>
+		<li><h2>{$menu['menu_title']}</h2></li>
+		<li>主料：{$menu['menu_intro']}</li>
+		<li class="pic"><img src="{$menu['menu_pic']}" onclick="jsshop.cart_add({id:'{$menu['menu_id']}',name:'{$menu['menu_title']}',pic:'{$menu['menu_pic_small']}',price:'{$menu['menu_price']}',type:'{$menu['menu_type']}'});"></li>
+		<li><span style="float:left"><font style="color:#CC0000;font-size:24px">￥{$menu['price_int']}</font><font style="color:#CC0000;font-size:16px">.{$menu['price_float']}</font><br><a href="javascript:jsshop.comment({$menu['menu_id']});">评论：{$menu['menu_comment_num']}条</a></span><span style="float:right"><input type="button" name="btnse" value="订一份" class="button1" onclick="jsshop.cart_add({id:'{$menu['menu_id']}',name:'{$menu['menu_title']}',pic:'{$menu['menu_pic_small']}',price:'{$menu['menu_price']}',type:'{$menu['menu_type']}'});"></span></li>
+	</ul>
+{/foreach}
+</div>

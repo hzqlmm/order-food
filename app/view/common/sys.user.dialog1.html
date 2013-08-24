@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户列表</title>
+<meta name="keywords" content="" />
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<script src="/common/js/kj.ajax.js"></script>
+<script src="/common/js/kj.page.js"></script>
+<style>
+body{text-align:left}
+
+.menu{float:left;width:100%;padding-top:5px;background:url({$temp_baseurl}/admin/images/menu_bg.jpg) repeat-x 0px bottom;color:#004499}
+.menu li{float:left;border-top:1px #C7D8EA solid;border-left:1px #C7D8EA solid;border-right:1px #C7D8EA solid;margin-left:10px;padding:8px 15px 3px 15px;letter-spacing:5px;cursor:pointer}
+.menu .fdpic{float:right;width:15px;height:13px;background:url(table.jpg) no-repeat 0px bottom;padding:8px 0px 0px 0px;border:0px}
+.menu .info{border:0px;color:#ff0000}
+.menu .sel{background:#ffffff;font-weight:bold}
+.menu .z_sel{color:#ff0000}
+.menu .x_btn{border:0px;color:#ff0000;padding:8px 5px 3px 5px}
+
+
+.list1{float:left;width:100%;text-align:center;padding-top:10px}
+.list1 li{float:left;padding:5px 10px 3px 5px;}
+.div1{float:left;width:100%;padding:8px 0px 10px 0px}
+.div1 li{float:left;width:auto;padding:0px 10px 0px 10px}
+
+</style>
+<script>
+var thisjs = new function() {
+	this.refresh = function(obj) {
+		window.location = "?" + this.get_url(obj);
+	}
+	this.get_url = function(obj) {
+		var url = [];
+		var i = 0;
+		//默认url参数
+		url[url.length]='app={$app}';
+		url[url.length]='app_module={$app_module}';
+		url[url.length]='app_act={$app_act}';
+		if(obj) {
+			if("page" in obj) url[url.length]='page=' + obj.page;
+		}
+		//查找相关参数
+		var obj_s = kj.obj("input<<name,/^s_/i");
+		for(i = 0 ; i < obj_s.length ; i++){
+			if(obj_s[i].type == "radio" || obj_s[i].type == "checkbox" ) {
+				if( obj_s[i].checked ) url[url.length] = obj_s[i].name + "=" + obj_s[i].value;
+			} else {
+				if(obj_s[i].value != '') url[url.length] = obj_s[i].name + "=" + obj_s[i].value;
+			}
+		}
+		obj_s = kj.obj("select<<name,/^s_/i");
+		for(i = 0 ; i < obj_s.length ; i++){
+			if(obj_s[i].value != '') url[url.length] = obj_s[i].name + "=" + obj_s[i].value;
+		}
+		//自定义相关参数
+		obj_s = kj.obj("input<<name,/^url_/i");
+		for(i = 0 ; i < obj_s.length ; i++){
+			if(obj_s[i].type == "radio" || obj_s[i].type == "checkbox" ) {
+				if( obj_s[i].checked ) url[url.length] = obj_s[i].name + "=" + obj_s[i].value;
+			} else {
+				if(obj_s[i].value != '') url[url.length] = obj_s[i].name + "=" + obj_s[i].value;
+			}
+		}
+		var str = url.join("&");
+		return str;
+	}
+	//清空查询
+	this.clear_search = function() {
+		kj.set("input<<name,/^s_/i",'value','');
+		kj.set("select<<name,/^s_/i",'options[0].selected',true);
+		this.refresh();
+	}
+
+	this.sel = function(id , name) {
+		var objid = "{fun_get::get('url_objid')}";
+		var callback = "{fun_get::get('callback')}";
+		if(!callback) callback = 'user1_callback';
+		var obj;
+		var isok = 0;
+		if(objid) {
+			if(window.opener) {
+				obj = window.opener.document.getElementById(objid);
+			}
+			if(!obj && window.parent) {
+				obj = window.parent.document.getElementById(objid);
+			}
+			if(obj) {
+				obj.value = val;
+				isok = 1;
+			}
+		}
+		obj = {};
+		obj.id = id;
+		obj.name = name;
+		obj.objid = objid;
+		//回调函数
+		if(window.parent && callback in window.parent){
+			var fun = "window.parent." + callback +"(obj)";
+			eval(fun);
+		} else if( window.opener && callback in window.opener) {
+			var fun = "window.opener." + callback +"(obj)";
+			eval(fun);
+		}
+		if(isok && window.opener) window.close();
+	}
+
+	this.menu_display = function() {
+		var obj = kj.obj("#id_search");
+		if(obj.style.display=="none") {
+			obj.style.display = '';
+		} else {
+			obj.style.display = 'none';
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+<input type="hidden" name="url_objid" value="{fun_get::get('url_objid')}" id="id_url_objid">
+<div class="menu" id="id_menu">
+	<li><a href="{fun_get::url(array('channel'=>'default'))}">用户列表</a></li>
+	<li onclick="thisjs.menu_display();" class="x_btn">查找</li>
+</div>
+
+<div class="div1" id="id_search" {if($arr_list['issearch']==0)}style="display:none"{/if}>
+<li>关键词：<input type="input" name="s_key" id="id_s_key" value="{fun_get::get('s_key')}" class='pTxt1 pTxtL150'></li>
+<li><input type="button" name="btn_s_ok" value="查找" class="pBtn" onclick="thisjs.refresh();"> 　<input type="button" name="btn_s_clear" value="清空" class="pBtn" onclick="thisjs.clear_search();"></li>
+</div>
+<div class="list1" id="id_list1">
+{foreach($arr_list['list'] as $item)}
+<li><a href="javascript:thisjs.sel({$item['user_id']},'{$item['user_name']}');"><span style="color:#ff8800">{$item['user_name']}</span>(id:{$item['user_id']})</a></li>
+{/foreach}
+</div>
+<div class="pPage" id="id_pPage">
+{$arr_list['pagebtns']}
+</div>
+</body>
+</html>

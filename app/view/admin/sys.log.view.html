@@ -1,0 +1,11 @@
+{include(header)}
+<input type="hidden" name="url_dirpath" value="{$arr_list['path']}">
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.act('');">管理</li>
+</div>
+<div class="pMain" id="id_main">
+	<div style="float:left;width:100%;text-align:left;line-height:20px;">
+		{$content}
+	</div>
+</div>
+{include(footer)}

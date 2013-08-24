@@ -1,0 +1,65 @@
+{include(header)}
+<script>
+kj.onload(function(){
+	me_change_type("{$editinfo["config_type"]}");
+});
+function me_change_type(msgval) {
+	var obj=kj.obj("#id_config_list_tr");
+	if(msgval == "list" || msgval == "chk") {
+		obj.style.display="";
+	} else {
+		obj.style.display="none";
+	}
+	obj=kj.obj("#id_obj_textarea");
+	obj_val=kj.obj("#id_default_val");
+	str_default_val=obj_val.value;
+	if(msgval=="textarea"||msgval=="array")	{
+		obj.innerHTML="<textarea name='config_val' id='id_config_val' style='width:300px;height:120px'>"+str_default_val+"</textarea>";
+	}else{
+		obj.innerHTML="<input type='input' name='config_val' value='"+str_default_val+"' size=46>";
+	}
+}
+</script>
+<div class="pMain" id="id_main">
+<textarea name='id_default_val' id="id_default_val" style="display:none">{$editinfo['config_val']}</textarea>
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">所属组：</td>
+	<td class="pTabColVal">
+		<select name="config_module">
+		{foreach($arr_module as $item=>$key)}
+		<option value="{$item}"{if($item==$editinfo['config_module'])} selected{/if}>{$key}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">类　型：</td><td class="pTabColVal">
+	<select name="config_type" id="id_config_type" onchange="me_change_type(this.value);">
+	<option value="str"{if('str'==$editinfo["config_type"])} selected{/if}>文本</option>
+	<option value="textarea"{if("textarea"==$editinfo["config_type"])} selected{/if}>多行文本</option>
+	<option value="int" {if("int"==$editinfo["config_type"])} selected{/if}>数字</option>
+	<option value="date" {if("date"==$editinfo["config_type"])} selected{/if}>日期</option>
+	<option value="bool" {if("bool"==$editinfo["config_type"])} selected{/if}>布尔</option>
+	<option value="list" {if("list"==$editinfo["config_type"])} selected{/if}>列表</option>
+	<option value="chk" {if("chk"==$editinfo["config_type"])} selected{/if}>多选</option>
+	<option value="array" {if("array"==$editinfo["config_type"])} selected{/if}>数组</option>
+	</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">变量名：</td><td class="pTabColVal"><input type="input" name="config_name" value="{$editinfo['config_name']}" size=46></td></tr>
+<tr style="display:none" id="id_config_list_tr">
+	<td class="pTabColName">值列表：</td><td class="pTabColVal"><textarea name='config_list' id="config_list" style='width:300px;height:120px'>{$editinfo["config_list"]}</textarea></td>
+	</tr>
+<tr>
+	<td class="pTabColName">默认值：</td><td class="pTabColVal" id="id_obj_textarea"><input type="input" name="config_val" value="{$editinfo['config_val']}" size=46></td></tr>
+<tr>
+	<td class="pTabColName">说　明：</td><td class="pTabColVal"><input type="input" name="config_intro" value="{$editinfo['config_intro']}" size=46></td></tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+{include(footer)}

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>打印订单</title>
+<meta name="keywords" content="" />
+<meta name="description" content=" 由克网站程序  - XXGO.NET" />
+<meta name="generator" content="klkkdj! 2.0.0" />
+<meta name="author" content="klkkdj!由克" />
+<meta name="copyright" content="2009-2012 XXGO NET" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+</script>
+<style>
+body{text-align:left;font-size:12px;line-height:20px}
+/*这里可以定义打印菜品列表样式，列表以 table显示*/
+table{width:{$width}px;border-collapse: collapse}
+table td{border-bottom:1px #cccccc solid}
+</style>
+</head>
+<body>
+{$print_cont}
+<script>
+kj.onload(function(){
+	window.print();
+});
+</script>
+</body></html>

@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `{DB_PRE}other_email`;

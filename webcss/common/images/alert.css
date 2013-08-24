@@ -1,0 +1,18 @@
+.alert_down {
+	position:fixed;
+	word-wrap:break-all;
+	white-space:nowrap;
+	overflow:hidden;
+	background:#efefef;
+	border-top:1px #cccccc solid;
+	border-left:1px #cccccc solid;
+	border-bottom:2px #cccccc solid;
+	border-right:2px #cccccc solid;
+	float:left;
+	padding:10px 20px;
+	width:auto;
+	font-size:14px;
+	letter-spacing:5px;
+	FILTER:alpha(opacity=50);
+	opacity:0.6;
+}

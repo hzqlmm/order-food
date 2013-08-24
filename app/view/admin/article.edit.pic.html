@@ -1,0 +1,42 @@
+<input type="hidden" name="article_channel_id" value="{$editinfo['article_channel_id']}">
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.edittabel(0);">基本信息</li>
+</div>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">目&nbsp;&nbsp;录：</td><td class="pTabColVal" id="id_folder_td">{$select_folder}</td></tr>
+<tr>
+	<td class="pTabColName">链&nbsp;&nbsp;接：</td><td class="pTabColVal"><input type="checkbox" name="article_islink" value="{$editinfo['article_islink']}" onclick="if(this.checked){kj.show('#id_linkurl');}else{kj.hide('#id_linkurl');}"{if($editinfo['article_islink']==1)} checked{/if}>&nbsp;&nbsp;<span id="id_linkurl"{if($editinfo['article_islink']!=1)} style="display:none"{/if}><input type="input" name="article_linkurl" value="{if(empty($editinfo['article_linkurl']))}http://{else}{$editinfo['article_linkurl']}{/if}" class='pTxt1 pTxtL300'></span></td></tr>
+<tr>
+	<td class="pTabColName">图片：</td><td class="pTabColVal"><span style="float:left"><input type="input" name="article_pic_big" id="id_article_pic_big" value="{$editinfo['article_pic_big']}" class='pTxt1 pTxtL300' onchange="kj.obj('#id_img_pic_big').src=kj.url_view(this.value);">&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=attatch&url_objid=id_article_pic_big',w:600,showbtnhide:false,top:0,type:'iframe'});">选择</a><br><iframe name="frm_article_pic_big" src="common.php?app=other&app_act=upload&small=1" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></span><span class="pic_article_pic"><img src="{$editinfo['pic_big']}" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'" id="id_img_pic_big" onclick="javascript:kj.pic.preview(this.src);"></span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">小图：</td><td class="pTabColVal"><span style="float:left"><input type="input" name="article_pic" id="id_article_pic" value="{$editinfo['article_pic']}" class='pTxt1 pTxtL300' onchange="kj.obj('#id_img_pic').src=kj.url_view(this.value);">&nbsp;<a href="javascript:kj.dialog({id:'dialog_attatch',title:'选择图片',url:'common.php?app=other&app_act=attatch&url_objid=id_article_pic',w:600,showbtnhide:false,top:0,type:'iframe'});">选择</a><br><iframe name="frm_article_pic" src="common.php?app=other&app_act=upload&callback=upload_callback_samll" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></span><span class="pic_article_pic"><img src="{$editinfo['pic']}" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'" id="id_img_pic" onclick="javascript:kj.pic.preview(this.src);"></span></td>
+	</tr>
+<tr>
+	<td class="pTabColName">状 态：</td>
+	<td class="pTabColVal">
+		<select name="article_state">
+		{foreach($arr_state as $item=>$key)}
+			<option value="{$key}"{if($key==$editinfo['article_state'])} selected{/if}>{$item}</option>
+		{/foreach}
+		</select>
+	</td></tr>
+<tr>
+	<td class="pTabColName">简介：</td><td class="pTabColVal"><textarea name="article_intro" rows="5" cols="90">{$editinfo['article_intro']}</textarea></td></tr>
+<tr>
+	<td class="pTabColName">属&nbsp;&nbsp;性：</td><td class="pTabColVal">
+	{foreach($arr_attribute as $item=>$key)}
+		<input type="checkbox" name="article_attribute[]" value="{$item}"{if(in_array($item , $editinfo['article_attribute']))} checked{/if}>{$key}&nbsp;&nbsp;
+	{/foreach}
+	</td></tr>
+</table>
+<!--label 1 end-->
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save_article' , function(){thisjs.clear_cont();});" class="pBtn">
+	</li>
+</div>

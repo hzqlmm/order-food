@@ -1,0 +1,65 @@
+{include(header)}
+<input type="hidden" name="url_dirpath" value="{$arr_list['pathdir']}">
+<div class="pMenu" id="id_pMenu">
+	<li class="sel" onclick="admin.act('');">管理</li>
+</div>
+<div class="pMain_1" id="id_pMain_1">
+	<div class="pPath">路径：{$arr_list["path"]}</div>
+</div>
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:25px;cursor:none">&nbsp;</span></li>
+		<li><span class="x_tit" style="width:500px;cursor:none">日志</span></li>
+		<li><span class="x_tit" style="width:100px;cursor:none">操作</span></li>
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_list['dir'] as $item)}
+			<div class='pTabRow'>
+				<li><input type='checkbox' name='selid[]' value="{$item['name']}"></li>
+				<li><img src="images/folder.gif">&nbsp;{$item["name"]}</li>
+				<li>
+				{if($this_limit->chk_act("open"))}<a href="javascript:thisjs.opendir('{$arr_list['pathdir']}/{$item['name']}');">打开</a>{/if}
+				{if($this_limit->chk_act("del"))}<a href="javascript:admin.ajax_url({url:'?app={$get_app}&app_module={$get_app_module}&app_act=delete&id={$item['name']}&dirpath={$arr_list['pathdir']}'});">删除</a>{/if}
+				</li>
+			</div>
+			{/foreach}
+			{foreach($arr_list['file'] as $item)}
+			<div class='pTabRow'>
+				<li><input type='checkbox' name='selid[]' value="{$item['name']}"></li>
+				<li>{$item["name"]}</li>
+				<li>
+				{if($this_limit->chk_act("open"))}<a href="javascript:master_open({url:'?app={$get_app}&app_module={$get_app_module}&filename={$item['name']}&dirpath={$arr_list['pathdir']}&app_act=view',title:'查看{$item['name']}',w:800});">查看</a>{/if}
+				{if($this_limit->chk_act("del"))}<a href="javascript:admin.ajax_url({url:'?app={$get_app}&app_module={$get_app_module}&app_act=delete&id={$item['name']}&url_dirpath={$arr_list['pathdir']}'});">删除</a>{/if}
+				</li>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+<li>
+<label><input type='checkbox' name='selall' value='1'>全选</label>　
+<select name="selact">
+	<option value="">--操作--</option>
+	{if($this_limit->chk_act("del"))}<option value="delete">删除</option>{/if}
+	</select>
+	&nbsp;<input type="button" name="dosubmit" value="执行" onclick="admin.selact();" class="pBtn">
+</li>
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+admin.table.list1.init('#id_table_title' , '#id_table');
+});
+var thisjs = new function() {
+	this.opendir = function(val) {
+		frm_main.url_dirpath.value = val;
+		admin.refresh();
+	}
+}
+</script>
+{include(footer)}

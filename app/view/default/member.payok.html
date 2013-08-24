@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+</head>
+<body>
+{include(header)}
+<div class="payok mg1">
+	<table align="center"><tr><td>
+		<div class="tipsright">
+		<li class="tit">恭喜！您的订单已经提交！</li>
+		<li>订单编号：<span style="color:#ff8800;">{$obj_order['order_number']}</span></li>
+		<li>订单金额：<span style="color:#ff8800;font-size:20px">￥{$obj_order['order_total_pay']}</span></li>
+		{if($obj_order['order_pay_method'] =='afterpayment')}
+		<li>支付方式：<span style="color:#ff8800;">货到付款</span></li>
+		<li><input type="button" name="btn_detail" value="查看详情" class="button2" onclick="jsmember.act_default();">&nbsp;&nbsp;<a href="./">返回首页</a></li>
+		{else if($obj_order['order_pay_method'] == 'repayment')}
+		<li>支付方式：<span style="color:#ff8800;">预付款</span><span style="color:#888888">(已支付)</span></li>
+		<li><input type="button" name="btn_detail" value="查看详情" class="button2" onclick="jsmember.act_default();">&nbsp;&nbsp;<a href="./">返回首页</a></li>
+		{else}
+		<li>支付方式：<span style="color:#ff8800;">{$obj_order['paymethod']}</span></li>
+			{if($timeout == 1)}
+				<li class="tipsred">订单已过期，请重新点餐</li>
+				</div>
+				</td></tr>
+				<tr><td>
+				<div class="info">
+				<li><input type="button" name="btn_pay" value="重新点餐" class="button2" onclick="window.open('./','_self');">&nbsp;&nbsp;<a href="javascript:jsmember.act_default();">查看订单</a></li>
+			{else}
+				</div>
+				</td></tr>
+				<tr><td>
+				<div class="info">
+				<li><input type="button" name="btn_pay" value="立即支付" class="button2" onclick="window.open('{fun_get::url(array('id'=>$id,'app_act'=>'order_pay'))}','_blank');">&nbsp;&nbsp;<a href="javascript:jsmember.act_default();">查看订单</a></li>
+				<li class="tipsred">请在{$delay_time} 前完成支付，否则订单将被取消</li>
+			{/if}
+		{/if}
+		</div>
+		</td></tr>
+		</table>
+</div>
+{include(footer)}
+</body>
+</html>

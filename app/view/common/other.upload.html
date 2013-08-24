@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>上传附件</title>
+<meta name="keywords" content="" />
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<style>
+body{text-align:left}
+</style>
+</head>
+<body>
+<form name="frmupload" method="post" action="{fun_get::url()}" enctype="multipart/form-data">
+<input type="hidden" name="objid" value="{$objid}"><input type="hidden" name="objpic" value="{$objpic}">
+<input type="file" name="file_1" id="file_1"><input type="submit" name="subok" value="上传">
+</form>
+{if(!empty($uploadinfo))} 
+<script>
+	{if($uploadinfo["code"] == 0)}
+		//如果有传callback，则自动调用回调函数 默认：upload_callback
+		if(window.parent) {
+			if( '{$get_callback}' in window.parent ) window.parent.{$get_callback}('{$uploadinfo["info"]}');
+			if('{$objid}'!='') {
+				var objid = window.parent.document.getElementById("{$objid}");
+				objid.value = '{$uploadinfo["list"]["url"]}';
+			}
+			if('{$objpic}'!='') {
+				var objpic = window.parent.document.getElementById("{$objpic}");
+				objpic.value = kj.url_view('{$uploadinfo["list"]["url"]}');
+			}
+		} else if(window.opener){
+			if( '{$get_callback}' in window.opener ) window.opener.{$get_callback}('{$uploadinfo["info"]}');
+			if('{$objid}'!='') {
+				var objid = window.opener.document.getElementById("{$objid}");
+				objid.value = '{$uploadinfo["list"]["url"]}';
+			}
+			if('{$objpic}'!='') {
+				var objpic = window.opener.document.getElementById("{$objpic}");
+				objpic.value = kj.url_view('{$uploadinfo["list"]["url"]}');
+			}
+		}
+	{else}
+		alert("{$uploadinfo['msg']}");
+	{/if}
+</script>
+{/if}
+</body>
+</html>

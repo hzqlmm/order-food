@@ -1,0 +1,139 @@
+{include(header)}
+<style>
+.me_pic_view{position:absolute;}
+</style>
+<input type="hidden" value="{$group}" name="url_group" id="id_url_group">
+<div class="pMenu" id="id_pMenu">
+	{foreach($arr_group as $item)}
+	<li{if($group==$item)} class="sel"{/if}>{$item}</li>
+	{/foreach}
+	<li onclick="admin.table.row_insert()" class="x_btn">添加</li>
+</div>
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:60px" onclick="admin.table.list1.sort('link_sort')">排序
+		{if(isset($arr_list['sort']['link_sort']))}<img src="images/sort_{$arr_list['sort']['link_sort']}.png">{/if}</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:120px" onclick="admin.table.list1.sort('link_name')">名称
+		{if(isset($arr_list['sort']['link_name']))}<img src="images/sort_{$arr_list['sort']['link_name']}.png">{/if}</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:300px" onclick="admin.table.list1.sort('link_url')">链接
+		{if(isset($arr_list['sort']['link_url']))}<img src="images/sort_{$arr_list['sort']['link_url']}.png">{/if}</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px" onclick="admin.table.list1.sort('link_pic')">图片
+		{if(isset($arr_list['sort']['link_pic']))}<img src="images/sort_{$arr_list['sort']['link_pic']}.png">{/if}</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="cursor:none;width:80px">操作</span></li>
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			<div class='pTabRow' style="display:none">
+				<li><input type='hidden' name='link_id[]' value=""><input type="text" name="link_sort[]" value="" class="autosize"></li>
+				<li><input type="text" name="link_name[]" value="" class="autosize"></li>
+				<li><input type="text" name="link_url[]" value="" class="autosize"></li>
+				<li id="#THISID_li"><input type="hidden" name="link_pic[]" value=""><img src="images/image_s.gif" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'" onmouseover="thisjs.pic_view(this,'');" onmouseout="thisjs.pic_view(this,'none');" onclick="thisjs.pic_sel(this);"><span class="me_pic_view"></span></li>
+				<li>
+					<a href="javascript:kj.remove('#THISID');">删除</a>
+				</li>
+			</div>
+			{foreach($arr_list['list'] as $item)}
+			<div class='pTabRow' id="id_tabrow_{$item['link_id']}">
+				<li><input type='hidden' name='link_id[]' value="{$item['link_id']}"><input type="text" name="link_sort[]" value="{$item['link_sort']}" class="autosize"></li>
+				<li><input type="text" name="link_name[]" value="{$item['link_name']}" class="autosize"></li>
+				<li><input type="text" name="link_url[]" value="{$item['link_url']}" class="autosize"></li>
+				<li id="{$item['link_id']}_li"><input type="hidden" name="link_pic[]" value="{$item['link_pic']}"><img src="images/image_s.gif" onerror="this.src='{$temp_baseurl}common/images/no_pic.jpg'" onmouseover="thisjs.pic_view(this,'');" onmouseout="thisjs.pic_view(this,'none');" onclick="thisjs.pic_sel(this);"><span class="me_pic_view"></span></li>
+				<li>
+				{if($this_limit->chk_act("delete"))}&nbsp;&nbsp;<a href="javascript:thisjs.remove('{$item['link_id']}');">删除</a>{/if}
+				</li>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>{if($this_limit->chk_act("save"))}<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">{/if}</li>
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+admin.table.list1.init('#id_table_title' , '#id_table');
+});
+//自动保存
+admin.table.list1.save_resize = function() {
+	var lng_w = (kj.w(this.field));
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=save_resize&filename=other&key=other.link&index=" + this.fieldsindex + "&w=" + lng_w , function(data){
+		//alert(data);
+	});
+}
+admin.table.list1.sort = function(key) {
+	kj.ajax.get("common.php?app=config&app_module=user&dir={$app_dir}&app_act=sort&key=other.link&filename=other&sortby=" + key , function(data){
+			var obj_data=kj.json(data);
+			if(!obj_data.isnull) {
+				admin.refresh();
+			}
+	});
+}
+//当前页面js对象
+var thisjs = new function() {
+	this.remove = function(id) {
+		admin.ajax_delete( id , true , function() {kj.remove("#id_tabrow_" + id);} );
+	}
+	//预览图片
+	this.pic_view = function(o,val) {
+		var obj = kj.parent(o , "li");
+		var arr = kj.obj(":link_pic[]" , obj);
+		var src = '';
+		if(arr && 'length' in arr & arr.length>0) src = arr[0].value;
+		if(src == '' ) {
+			src = '{$temp_baseurl}common/images/no_pic.jpg';
+		} else {
+			src = kj.url_view(src);
+		}
+
+		arr = kj.obj(".me_pic_view" , obj);
+		if(arr && 'length' in arr && arr.length>0) {
+			arr[0].innerHTML = '<img src'+'="' + src + '" class="img_w500">';
+			arr[0].style.display = val;
+		}
+	}
+	//图片选择框
+	this.pic_sel = function(o) {
+		var objcol = kj.parent(o , "li");
+		var arr = kj.obj(":link_pic[]" , objcol);
+		var url;
+		if(arr && 'length' in arr & arr.length>0) {
+			url = arr[0].value;
+		}
+
+		var html = '<div style="float:left;width:550px;padding:20px 0px 0px 10px"><span style="float:left"><input type="input" id="id_sel_pic" value="'+url+'" class="pTxt1 pTxtL300" onchange="kj.obj(\'#id_sel_pic_view\').src=kj.url_view(this.value);">&nbsp;<a href="javascript:kj.dialog({id:\'id_sel_pic\',title:\'选择图片\',url:\'common.php?app=other&app_act=attatch&url_objid=id_sel_pic&callback=pic_callback\',w:600,showbtnhide:false,top:0,type:\'iframe\'});">选择</a><br><iframe name="frm_format_pic" src="common.php?app=other&app_act=upload&callback=pic_upload" width="300px" height="30px" frameborder=0 scrolling="no"></iframe></span><span style="float:left;padding-left:10px"><img src'+'="'+kj.url_view(url)+'" width="60px" height="60px" id="id_sel_pic_view" onclick="kj.pic.preview(this.src);" onerror="this.src=\'{$temp_baseurl}common/images/no_pic.jpg\'"></span><span style="float:left;width:500px;padding-left:10px"><input type="button" name="btn_format_pic_ok" value="确定" onclick="thisjs.pic_ok(\''+objcol.id+'\');" class="pBtn">&nbsp;&nbsp;<input type="button" name="btn_format_pic_cancel" value="取消" onclick="kj.dialog.close(\'#winformat_pic_sel\');" class="pBtn"></span></div>';
+		kj.dialog({'html':html,'id':'format_pic_sel','type':'html','title':'选择图片','w':600,'h':160,'showbtnmax':false,'showbtnclose':false});
+	}
+	//图片选择确定
+	this.pic_ok = function(id) {
+		var objcol = kj.obj("#" + id);
+		var arr = kj.obj(":link_pic[]" , objcol);
+		if(arr && 'length' in arr & arr.length>0) {
+			arr[0].value = kj.obj("#id_sel_pic").value;
+		}
+		kj.dialog.close("#winformat_pic_sel");
+
+	}
+
+}
+//规格图片选择回调
+function pic_callback(o) {
+	if('objid' in o) {
+		kj.obj("#id_sel_pic_view").src = kj.url_view(kj.obj("#id_sel_pic").value);
+	}
+	kj.dialog.close("#winid_sel_pic");
+}
+//规格图片上传回调
+function pic_upload(o) {
+	o = kj.json(o);
+	if('url' in o) {
+		kj.obj("#id_sel_pic_view").src = kj.url_view(o.url);
+		kj.obj("#id_sel_pic").value = o.url;
+	}
+}
+
+</script>
+{include(footer)}

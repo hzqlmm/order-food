@@ -1,0 +1,38 @@
+{include(header)}
+<style>
+.beta{float:left;width:400px;padding:10px 0px 0px 10px;line-height:25px};
+</style>
+<div class="pMain" id="id_main">
+<table class='pEditTable'>
+<tr class='pTabTitRow'><td class='pTabTitCol' colspan="2"></td></tr>
+<tr>
+	<td class="pTabColName">姓名：</td><td class="pTabColVal">{$editinfo['msg_name']}</td>
+	</tr>
+<tr>
+	<td class="pTabColName">电话：</td><td class="pTabColVal">{$editinfo['msg_tel']}</td>
+	</tr>
+<tr>
+	<td class="pTabColName">邮箱：</td><td class="pTabColVal">{$editinfo['msg_email']}</td>
+	</tr>
+<tr>
+	<td class="pTabColName">内容：</td><td class="pTabColVal">{$editinfo['msg_cont']}</td>
+	</tr>
+<tr>
+	<td class="pTabColName">回复：</td><td class="pTabColVal"><textarea name='recont' cols="50" rows=10 class='pTxt1' required></textarea></td>
+	</tr>
+<tr>
+	<td class="pTabColName">通知：</td><td class="pTabColVal">
+	<label{if(fun_is::com('sms')==false)} disabled title="需要安装短信组件"{else if(fun_is::mobile($editinfo['msg_tel'])==false)} disabled title="电话为空或非手机号码"{/if}><input type="checkbox" name="issms" value="{$editinfo['msg_tel']}">短信</label>&nbsp;&nbsp;<label{if(fun_is::com('sms')==false)} disabled title="需要安装邮件组件"{else if(fun_is::mobile($editinfo['msg_tel'])==false)} disabled title="邮件未填写或格式不正确"{/if}><input type="checkbox" name="isemail" value="{$editinfo['msg_email']}">邮件</label>
+	</td>
+	</tr>
+</table>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>
+	<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('save');" class="pBtn">
+	</li>
+</div>
+<script>
+
+</script>
+{include(footer)}

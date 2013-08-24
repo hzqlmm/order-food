@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{cfg:(site_title,sys)}</title>
+<meta name="keywords" content="{cfg:(keywords,sys)}"/>
+<meta name="description" content="{cfg:(description,sys)}"/>
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="/common/images/expand.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<script src="/common/js/kj.page.js"></script>
+<style>
+body{background:#fff}
+</style>
+</head>
+<body style="overflow-x:hidden">
+{if(count($arr_list['list'])>0)}
+	<div class="mymsg">
+		{foreach($arr_list['list'] as $item)}
+		<div class="info"> 姓名：{$item["msg_name"]}&nbsp;&nbsp;&nbsp;&nbsp;电话：{$item["msg_tel"]}&nbsp;&nbsp;&nbsp;&nbsp;邮箱：{$item["msg_email"]}</div>
+		<div class="content">{$item["msg_cont"]}</div>
+		<div class="beta">时间：{$item["msg_time"]}　　IP：{$item["msg_ip"]}</div>
+		<div class="return" id="id_return_{$item["msg_id"]}">
+		{if(!empty($item["msg_recont"]))}
+			<div class="return_content">{$item["msg_recont"]}</div>
+			<div class="return_beta">&nbsp;&nbsp;时间：{$item["msg_retime"]}</div>
+		{/if}
+		</div>
+		{/foreach}
+	</div>
+	<div class="pPage" id="id_pPage" style="margin-top:20px">
+	{$arr_list['pagebtns']}
+	</div>
+{else}
+	<center>
+		<div class="shop_tips" id="id_shop_tips" style="position:static">
+		<ul>
+		<li><h1>您还没有留言</h1></li>
+		<li style="margin-top:20px"><input type="button" name="btn" value="我要留言" class="button3" onclick="window.open('index.php?app_act=msg','_top');"></li>
+		<ul>
+		</div>
+	</center>
+{/if}
+</body>
+</html>

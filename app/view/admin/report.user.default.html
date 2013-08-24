@@ -1,0 +1,83 @@
+{include(header)}
+<script src="/components/report/jquery.min.js"></script>
+<style>
+.me_div1{float:left;margin:10px 0px 10px 20px}
+</style>
+<div class="pMenu" id="id_pMenu">
+	<li{if(fun_get::get("channel")=='')} class="sel"{/if} onclick="admin.refresh_url(['channel=']);">注册用户</li>
+	<li{if(fun_get::get("channel")=='login')} class="sel"{/if} onclick="admin.refresh_url(['channel=login']);">登录用户</li>
+	<li{if(fun_get::get("channel")=='login_back')} class="sel"{/if} onclick="admin.refresh_url(['channel=login_back']);">回头客</li>
+</div>
+<div class="btnMenuDiv" id="id_btnMenuDiv">
+		<div class="me_div1">
+		统计模式：<label><input type="radio" name="mode" value="day" checked onclick="admin.refresh_url(['mode=']);">按天</label>&nbsp;&nbsp;<label><input type="radio" name="mode" value="month"{if($mode=='month')} checked{/if} onclick="admin.refresh_url(['mode=month']);">按月</label>{if(fun_get::get("channel")=='')}&nbsp;&nbsp;<label><input type="radio" name="mode" value="year"{if($mode=='year')} checked{/if} onclick="admin.refresh_url(['mode=year']);">按年</label>{/if}
+		</div>
+		<div class="me_div1">
+			<span id="id_mode_day" style="float:left;padding-left:60px{if($mode=='year' || $mode=='month')};display:none{/if}">日期：<input type="text" id="id_day_date" name="date" value="{fun_get::get('date')}" class='pTxtDate' onfocus="new Calendar().show(this,null,function(){admin.refresh_url(['date='+kj.obj('#id_day_date').value]);});"> </span>
+			<span id="id_mode_month" style="float:left;padding-left:60px{if($mode!='year' && $mode!='month')};display:none{/if}">
+				<select name="year" onchange="admin.refresh_url('year='+this.value);">
+				{for($i=2012;$i<=date("Y");$i++)}
+				<option value="{$i}"{if(fun_get::get("year")==$i)} selected{/if}>{$i}年</option>
+				{/for}
+				</select>
+			</span>
+			<span id="id_mode_year" style="float:left;padding-left:20px{if($mode!='month')};display:none{/if}">
+				<select name="month" onchange="admin.refresh_url('month='+this.value);">
+				{for($i=1;$i<13;$i++)}
+				<option value="{$i}"{if(fun_get::get("month")==$i)} selected{/if}>{$i}月</option>
+				{/for}
+				</select>
+			</span>
+		</div>
+</div>
+<div id="container" style="float:left;width:800px;height:300px">
+</div>
+<script type="text/javascript">
+$(function () {
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line'
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: {$report['sub']}
+            },
+            yAxis: {
+                title: {
+                    text: '{if(fun_get::get("channel")=="login")}登录数{else if(fun_get::get("channel")=="login_back")}回头客{else}新用户{/if}'
+                }
+            },
+            tooltip: {
+                enabled: false,
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y;
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: '{if(fun_get::get("channel")=="login")}登录数{else if(fun_get::get("channel")=="login_back")}回头客{else}新用户{/if}',
+                data: {$report['data']}
+            }]
+        });
+    });
+    
+});
+		</script>
+<script src="/components/report/highcharts.js"></script>
+{include(footer)}

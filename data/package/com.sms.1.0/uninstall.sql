@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS `{DB_PRE}other_sms`;
+DROP TABLE IF EXISTS `{DB_PRE}other_sms_re`;

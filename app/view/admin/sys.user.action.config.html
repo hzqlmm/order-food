@@ -1,0 +1,47 @@
+{include(header)}
+<div class="pMenu" id="id_pMenu">
+	<li onclick="admin.act('');">记录明细</li>
+	<li class="sel">配置</li>
+</div>
+<div class="pMain" id="id_main">
+<div class="pTableBox" id="id_table_box">
+	<div class='pTableTit' id="id_table_title">
+		<li><span class="x_tit" style="width:25px">&nbsp;</span></li>
+		<li><span class="x_tit" style="width:150px">描述</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px">积分倍数</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px">积分基数</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px">经验倍数</span><span class="x_split"></span></li>
+		<li><span class="x_tit" style="width:100px">经验基数</span><span class="x_split"></span></li>
+	</div>
+	<div class="pTableList" id="id_table_list">
+		<div class='pTable' id="id_table">
+			{foreach($arr_list as $item => $list)}
+				{if($list['type']==1)}
+				<div class='pTabRow' id="id_tabrow_{$item}">
+					<li><input type="hidden" name="ids[]" value="{$item}"></li>
+					<li><input type="text" name="title_{$item}" value="{$list['title']}" class="autosize"></li>
+					<li><input type="text" name="basescore_{$item}" value="{$list['basescore']}" class="autosize"></li>
+					<li><input type="text" name="addscore_{$item}" value="{$list['addscore']}" class="autosize"></li>
+					<li><input type="text" name="experience_{$item}" value="{$list['baseexperience']}" class="autosize"></li>
+					<li><input type="text" name="addexperience_{$item}" value="{$list['addexperience']}" class="autosize"></li>
+				</div>
+				{/if}
+			{/foreach}
+		</div>
+	</div>
+</div>
+</div>
+<div class="pFootAct" id="id_pFootAct">
+	<li>{if($this_limit->chk_act("save"))}<input type="button" name="dosubmit" value="保存" onclick="admin.frm_ajax('config_save');" class="pBtn">{/if}</li>
+</div>
+<script src="admin.table.js"></script>
+<script>
+//初始化表格控件
+kj.onload(function(){
+	admin.table.list1.init('#id_table_title' , '#id_table');
+});
+//当前页面js对象
+var thisjs = new function() {
+}
+</script>
+{include(footer)}

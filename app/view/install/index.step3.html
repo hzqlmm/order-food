@@ -1,0 +1,237 @@
+{include(header)}
+<div class="left" id="id_left">
+<li class="x_over">1.安装协议</li>
+<li class="x_over">2.环境检测</li>
+<li class="x_sel">3.配置参数</li>
+<li>4.开始安装</li>
+<li>5.完成安装</li>
+</div>
+<div class="div_box1" id="id_box1">
+<form name="frm_main">
+	<div class="x_title">数据库信息</div>
+	<div class="x_col1">数据库地址：</div>
+	<div class="x_col2"><input type="text" name="DB_HOST" value="{fun_get::get('DB_HOST','localhost')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">本机请填写localhost</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">数据库名：</div>
+	<div class="x_col2"><input type="text" name="DB_NAME" value="{fun_get::get('DB_NAME','kj_meal')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">若不存在将尝试创建</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">数据库用户名:</div>
+	<div class="x_col2"><input type="text" name="DB_USER" value="{fun_get::get('DB_USER','root')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">用于数据库连接验证的用户名</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">数据库密码:</div>
+	<div class="x_col2"><input type="password" name="DB_PWD" value="{fun_get::get('DB_PWD')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">用于数据库连接验证的密码</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">数据库表前缀:</div>
+	<div class="x_col2"><input type="text" name="DB_PRE" value="{fun_get::get('DB_PRE','kj_')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">同一个数据库运行多个系统时，用来区别表</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_title">网站配置信息</div>
+	<div class="x_col1">管理员账号:</div>
+	<div class="x_col2"><input type="text" name="WEB_ADMIN" value="{fun_get::get('WEB_ADMIN','admin')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">初始管理员账号</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">管理员密码:</div>
+	<div class="x_col2"><input type="password" name="WEB_ADMIN_PWD" value="{fun_get::get('WEB_ADMIN_PWD')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">请输入管理员密码</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">二级目录地址:</div>
+	<div class="x_col2"><input type="text" name="WEB_DIR" value="{fun_get::get('WEB_DIR' , $dirpath)}" class="pTxt1 pTxtL200"></div>
+	<div class="x_col3 pBeta">同一个域名下运行多个网站时用来区分各站点</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">站点Cookie前缀:</div>
+	<div class="x_col2"><input type="text" name="COOKIE_PRE" value="{fun_get::get('COOKIE_PRE','kj_')}" class="pTxt1 pTxtL200"> <font style="color:#ff0000">*</font></div>
+	<div class="x_col3 pBeta">同一个域名下运行多个网站时用来区分各站点</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_title">官方注册信息</div>
+	<div class="x_col1">账号:</div>
+	<div class="x_col2"><input type="text" name="KLKKDJ_UNAME" value="{fun_get::get('KLKKDJ_UNAME')}" class="pTxt1 pTxtL200"></div>
+	<div class="x_col3 pBeta">邦定账号可以在线升级及组件安装，还没有? <a href="http://www.klkkdj.com/index.php?app=index&app_act=reg" target="_blank" style="color:#ff8800">点击注册</a> </div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="x_col1">密码:</div>
+	<div class="x_col2"><input type="password" name="KLKKDJ_PWD" value="{fun_get::get('KLKKDJ_PWD')}" class="pTxt1 pTxtL200"></div>
+	<div class="x_col3 pBeta">您在官网注册账号时的登录密码</div>
+	<div class="x_sp1">&nbsp;</div>
+	<div class="div_action"><input type="button" name="btn1" value="上一步" class="btn_1" onclick="thisjs.pre();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="btn1" value="确认，并安装" class="btn_1" onclick="thisjs.install();"></div>
+</form>
+</div>
+<div class="div_box1" id="id_box2" style="display:none;height:220px;padding-top:80px">
+	<div class="x_title2">成功安装系统！</div>
+	<div class="div_action"><input type="button" name="btn1" value="访问网站" class="btn_1" onclick="location='{$dirpath}/';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="btn1" value="后台管理" class="btn_1" onclick="location='{$dirpath}/master.php';"></div>
+</div>
+<script>
+var thisjs = new function() {
+	this.isstall = false;
+	this.pre = function() {
+		var arr = kj.obj(".pTxt1");
+		var addparam = [];
+		for(var i = 0; i < arr.length ; i++ ) {
+			if(arr[i].value) addparam[addparam.length] = arr[i].name + "=" + arr[i].value;
+		}
+		var url = kj.urlencode("{fun_get::url(array('app_act'=>'step2'))}" , addparam)
+		location = url;
+	}
+
+	this.install = function() {
+		if(document.frm_main.DB_HOST.value=='') {
+			alert("请填写数据库地址");
+			document.frm_main.DB_HOST.focus();
+			return;
+		}
+		if(document.frm_main.DB_NAME.value=='') {
+			alert("请填写数据库名");
+			document.frm_main.DB_NAME.focus();
+			return;
+		}
+		if(document.frm_main.DB_USER.value=='') {
+			alert("请填写数据库用户名");
+			document.frm_main.DB_USER.focus();
+			return;
+		}
+		if(document.frm_main.DB_PWD.value=='') {
+			alert("请填写数据库密码");
+			document.frm_main.DB_PWD.focus();
+			return;
+		}
+		if(document.frm_main.DB_PRE.value=='') {
+			alert("请填写数据库表前缀");
+			document.frm_main.DB_PRE.focus();
+			return;
+		}
+		if(document.frm_main.WEB_ADMIN.value=='') {
+			alert("请填写管理员账号");
+			document.frm_main.WEB_ADMIN.focus();
+			return;
+		}
+		if(document.frm_main.WEB_ADMIN_PWD.value=='') {
+			alert("请填写管理员密码");
+			document.frm_main.WEB_ADMIN_PWD.focus();
+			return;
+		}
+		if(document.frm_main.COOKIE_PRE.value=='') {
+			alert("请填写站点Cookie前缀");
+			document.frm_main.COOKIE_PRE.focus();
+			return;
+		}
+		var arr = kj.obj("#id_left li");
+		arr[2].className = "x_over";
+		arr[3].className = "x_sel";
+		this.install_start();
+	}
+	//安装配置文件
+	this.install_config = function() {
+		var obj_data = {"DB_HOST":document.frm_main.DB_HOST.value,"DB_NAME":document.frm_main.DB_NAME.value,"DB_USER":document.frm_main.DB_USER.value,"DB_PWD":document.frm_main.DB_PWD.value,"DB_PRE":document.frm_main.DB_PRE.value,"WEB_ADMIN":document.frm_main.WEB_ADMIN.value,"WEB_ADMIN_PWD":document.frm_main.WEB_ADMIN_PWD.value,"WEB_DIR":document.frm_main.WEB_DIR.value,"COOKIE_PRE":document.frm_main.COOKIE_PRE.value,"KLKKDJ_UNAME":document.frm_main.KLKKDJ_UNAME.value,"KLKKDJ_PWD":document.frm_main.KLKKDJ_PWD.value}
+		kj.ajax.post("{fun_get::url(array('app_act'=>'config'))}" , obj_data , function(data) {
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				thisjs.isstall = false;
+				kj.alert("获取安装数据表时失败");
+				kj.progress.show1.close('install');
+				return;
+			}
+			if('code' in obj_data && obj_data.code=='0') {
+				thisjs.install_table();
+			} else {
+				thisjs.isstall = false;
+				if('msg' in obj_data) {
+					alert(obj_data.msg);
+				} else {
+					alert("配置信息时发生错误");
+				}
+				kj.progress.show1.close('install');
+			}
+		});
+	}
+	//开始安装
+	this.install_start = function() {
+		if(this.isstall) {
+			alert("正在安装...");
+			return;
+		}
+		this.isstall = true;
+		this.tables = [];
+		kj.ajax.get("{fun_get::url(array('app_act'=>'install_gettable'))}" , function(data) {
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("获取安装数据表时失败");
+				thisjs.isstall = false;
+				return;
+			}
+			for(var i = 0; i < obj_data.length ; i++) {
+				thisjs.tables[thisjs.tables.length] = obj_data[i].name;
+			}
+			kj.progress.show1.open({id:'install',title:'正在配置系统:' ,size:thisjs.tables.length+1,w:500});
+			thisjs.install_config();
+		});
+	}
+	//安装表
+	this.install_table = function() {
+		if( thisjs.tables.length < 0 ) return;
+		if( thisjs.tables.length == 0 ) {
+			var obj_data = {"WEB_ADMIN":document.frm_main.WEB_ADMIN.value,"WEB_ADMIN_PWD":document.frm_main.WEB_ADMIN_PWD.value}
+			//插入初始账号
+			kj.ajax.post("{fun_get::url(array('app_act'=>'initdata'))}" , obj_data , function(data) {
+				kj.progress.show1.close('install');
+				kj.alert.show("安装完成");
+				var arr = kj.obj("#id_left li");
+				arr[3].className = "x_over";
+				arr[4].className = "x_sel";
+				kj.hide("#id_box1");
+				kj.show("#id_box2");
+				thisjs.isstall = false;
+			});
+			return;
+		}
+		var tablename = thisjs.tables[0];
+		thisjs.tables.removeat(0);
+		kj.ajax.get("{fun_get::url(array('app_act'=>'install_table'))}&tablename=" + tablename , function(data){
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("安装表[" + tablename + "]失败");
+				thisjs.isstall = false;
+				kj.progress.show1.close('install');
+				return;
+			}
+			obj_data.len = kj.toint(obj_data.len);
+			if( obj_data.len > 0 ) {
+				if(obj_data.len>10) {
+					kj.progress.show1.open({id:'install_row',title:'安装表:' + tablename ,size:obj_data.len,w:100});
+				}
+				thisjs.install_row(tablename , 1);
+			} else {
+				thisjs.install_table();
+			}
+		});
+		kj.progress.show1.step('install',"正在安装表："+tablename);
+	}
+	this.install_row = function(tablename , row) {
+		kj.progress.show1.step('install_row');
+		kj.ajax.get("{fun_get::url(array('app_act'=>'install_row'))}&tablename=" + tablename + "&page=" + row , function(data){
+			var obj_data=kj.json(data);
+			if(obj_data.isnull) {
+				kj.alert("安装表[" + tablename + "]失败");
+				thisjs.isstall = false;
+				kj.progress.show1.close('install');
+				return;
+			}
+			if(obj_data.code != '0') {
+				('msg' in obj_data && obj_data.msg!='') ? kj.alert(obj_data.msg) : kj.alert("安装表[" + tablename + "]失败");
+				thisjs.isstall = false;
+				return;
+			}
+			var row = kj.toint(obj_data.next);
+			if( row > 0 ) {
+				thisjs.install_row(tablename , row);
+			} else {
+				kj.progress.show1.close('install_row');
+				thisjs.install_table();
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

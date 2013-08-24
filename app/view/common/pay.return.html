@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>提示</title>
+<meta name="keywords" content="" />
+<link rel="stylesheet" type="text/css" href="/common/images/common.css"/>
+<link rel="stylesheet" type="text/css" href="images/css.css"/>
+<script src="{cfg:(dirpath,base)}/common.php?app=sys&app_act=web.config&app_ajax=1"></script>
+<script src="/common/js/kj.js"></script>
+<style>
+body{text-align:center}
+</style>
+</head>
+<body>
+<table align="center"><tr><td style="padding-top:30px">
+{if($payinfo['code']!=0)}
+	{$payinfo['msg']}
+{else}
+	支付成功
+{/if}
+</td></tr></table>
+</body>
+</html>
