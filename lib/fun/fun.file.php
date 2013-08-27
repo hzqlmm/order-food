@@ -1,7 +1,7 @@
 <?php 
-/* KLKKDJ订餐之单店版
+/*
  * 版本号：3.0测试版
- * 官网：http://www.klkkdj.com
+ *
  * 2012-12-04
  */
 class fun_file{

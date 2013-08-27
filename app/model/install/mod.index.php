@@ -1,7 +1,7 @@
 <?php
 /* KLKKDJ订餐之多店版
  * 版本号：3.1
- * 官网：http://www.klkkdj.com
+ *
  * 2013-03-10
  */
 class mod_index extends inc_mod_install {

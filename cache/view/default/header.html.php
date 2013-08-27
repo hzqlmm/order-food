@@ -24,7 +24,7 @@
 		<a href="javascript:jsmember.act_myintegral();">我的积分</a>
 		<a href="javascript:jsmember.act_myvip();">我的经验</a>
 		<a href="javascript:jsmember.act_msg();">我的留言</a>
-		<a href="javascript:jsmember.act_repayment();">我的预付款</a>
+	<!-- 	<a href="javascript:jsmember.act_repayment();">我的预付款</a> -->
 		<a href="common.php?app=sys&app_act=login.out">退出</a>
 	</li>
 </div>
@@ -45,11 +45,6 @@
 			<li><span class="x1"></span><span><label><input type="checkbox" name="autologin" value="1" checked>下次自动登录</label>&nbsp;&nbsp;<a href="?app=index&app_act=findpwd">忘记密码?</a><br><br>
 			<input type="submit" name="btn_submit" value="登 录" class="button1" style="font-size:22px">
 			</span></li>
-		</ul>
-		<ul class="xright">
-			<li>使用其它账号登录：</li>
-			<li><img src="/webcss/default/images/btn_sina.png"></li>
-			<li><img src="/webcss/default/images/btn_qq.png"></li>
 		</ul>
 		<ul class="xboot a1">
 		<h1>还不是会员？</h1>一分钟轻松注册，就可以方便订餐<a href="javascript:jsheader.showreg();">【立即注册】</a>

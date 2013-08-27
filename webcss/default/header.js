@@ -26,7 +26,7 @@ var jsheader = new function() {
 			this.login_html = obj.innerHTML;
 			kj.remove(obj);
 		}
-		kj.dialog({'html':this.login_html,'id':'showlogin','type':'html','title':'会员登录','w':500,'showbtnmax':false,'showbtnhide':false});
+		kj.dialog({'html':this.login_html,'id':'showlogin','type':'html','title':'会员登录','w':416,'showbtnmax':false,'showbtnhide':false});
 	}
 	this.show_verify = function() {
 		var objpic = kj.obj("#id_verify_pic");

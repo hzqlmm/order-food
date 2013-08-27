@@ -1,7 +1,7 @@
 <?php
-/* KLKKDJ订餐之单店版
- * 版本号：3.1版
- * 官网：http://www.klkkdj.com
+/*
+ *
+ *
  * 2013-03-24
  */
 require_once KJ_DIR_LIB.'/components/phpmailer/class.phpmailer.php';

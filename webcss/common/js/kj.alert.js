@@ -1,6 +1,6 @@
-/* KLKKDJ订餐之单店版
- * 版本号：3.1版
- * 官网：http://www.klkkdj.com
+/*
+ *
+ *
  * 2013-03-24
  ** kj 下 alert 对象
  *  需要引用 common/images/alert.css
