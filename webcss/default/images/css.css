@@ -86,10 +86,10 @@ a:active {color:#ff6600;}
 .left{float:left;}
 .right{float:left;width:240px;background:#3d0015}
 .right li{float:left;padding:8px 5px 5px 20px;width:215px;line-height:20px;color:#fc0062}
-.right .pic{width:200px;border:1px #ccc solid;padding:1px;margin:10px 0px 0px 20px;background:#fff;text-align:center;height:200px;vertical-align:middle;line-height:200px}
+.right .pic{width:200px;padding:1px;margin:10px 0px 0px 20px;text-align:center;height:200px;vertical-align:middle;line-height:200px}
 .right .pic span{float:left;width:200px;height:200px;line-height:200px}
 .right .pic .xcollect{position:relative;top:-115px;left:75px;background:url(collect.png) no-repeat left center;padding-left:18px;z-index:0}
-.right .pic span img{max-width:200px;max-height:200px;_zoom:expression(function(x){if(x.width>200){x.width=200;}if(x.height>200){x.height=200;}}(this));vertical-align:middle}
+.right .pic span img{max-width:200px;max-height:200px;_zoom:expression(function(x){if(x.width>200){x.width=200;}if(x.height>200){x.height=200;}}(this));vertical-align:middle;width:170px}
 .right .info{width:220px;padding:5px 0px 0px 20px;line-height:20px;}
 .right .info .xtit{font-size:18px;width:220px;font-weight:bold}
 .right .info span{float:left;padding:3px 0px 3px 0px;margin-left:10px}

@@ -46,8 +46,9 @@
 	</div>
 </div>
 <div class="right" id="id_right">
-	<li class="pic"><span><img src="{cfg:(shop_logo,view)}">&nbsp;</span><a href="javascript:window.external.AddFavorite(location.href,document.title);" class="xcollect">收藏</a></li>
-	<li class="info"><span class='xtit'>{cfg:(shop_name,view)}</span><span><font color="#fc0062">餐品：</font>{$shop_menunum}</span><span><a href="javascript:jsheader.comment_shop()" style="color:#fc0062"><font color="#fc0062">评论：</font>{$shop_commentnum}</span></a></li>
+	<li class="pic"><span><img src="{cfg:(shop_logo,view)}">&nbsp;</span></li>
+    <img src="images/dividing-line-240.png">
+    <li class="info"><span class='xtit'>{cfg:(shop_name,view)}</span><span><font color="#fc0062">餐品：</font>{$shop_menunum}</span><span><a href="javascript:jsheader.comment_shop()" style="color:#fc0062"><font color="#fc0062">评论：</font>{$shop_commentnum}</span></a></li>
 	{if(!empty($opentime['cont']))}
 	<li class="tit">{$opentime['title']}</li>
 	<img src="images/dividing-line-240.png">
