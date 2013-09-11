@@ -1,8 +1,8 @@
 <?php
 return array (
-  'keywords' => 'KLKKDJ在线订餐系统，php订餐系统，免费开源订餐系统',
-  'description' => 'KLKKDJ在线订餐系统，php订餐系统，免费开源订餐系统',
-  'site_title' => 'KLKKDJ在线订餐',
+  'keywords' => '麦兜外卖',
+  'description' => '麦兜外卖',
+  'site_title' => '麦兜外卖',
   'config_module' => 
   array (
     'sys' => '系统',
