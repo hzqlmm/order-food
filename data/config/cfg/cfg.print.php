@@ -1,6 +1,6 @@
 <?php
 return array (
-  'printinfo' => 'KLKKDJ订餐系统
+  'printinfo' => '麦兜外卖
 {菜品列表}
 {积分抵扣}
 {优惠活动}

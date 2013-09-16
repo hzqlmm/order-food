@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>后台系统</title>
 <meta name="keywords" content="" />
-<meta name="description" content=" 由克网站程序  - XXGO.NET" />
-<meta name="generator" content="klkkdj! 2.0.0" />
-<meta name="author" content="klkkdj!由克" />
+<meta name="description" content="" />
+<meta name="generator" content="" />
+<meta name="author" content="" />
 <meta name="copyright" content="2009-2012 XXGO NET" />
 <meta name="MSSmartTagsPreventParsing" content="True" />
 <meta http-equiv="MSThemeCompatible" content="Yes" />

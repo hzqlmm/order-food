@@ -1,11 +1,11 @@
 <?php
 return array (
-  'name' => 'KLKKDJ订餐之单店版',
-  'author' => '由克',
-  'web' => 'http://www.klkkdj.com',
+  'name' => '麦兜外卖',
+  'author' => '',
+  'web' => 'http://www.maidouwm.com',
   'web_uname' => '',
   'web_pwd' => '',
-  'email' => 'klkkdj@126.com',
+  'email' => 'ck318859@163.com',
   'module' => 'meal',
   'version' => '3.1',
   'version_name' => '3.1 正式版',
