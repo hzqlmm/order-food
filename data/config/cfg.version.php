@@ -19,7 +19,7 @@ return array (
       'version' => '1.0',
       'installtime' => '2013-03-11 19:22:27',
       'updatetime' => '2013-03-11 19:22:27',
-      'author' => '由克',
+      'author' => '麦兜',
     ),
     'msg' => 
     array (
@@ -27,7 +27,7 @@ return array (
       'version' => '1.0',
       'installtime' => '2013-03-11 19:23:00',
       'updatetime' => '2013-03-11 19:23:00',
-      'author' => '由克',
+      'author' => '麦兜',
     ),
     'email' => 
     array (
@@ -35,7 +35,7 @@ return array (
       'version' => '1.0',
       'installtime' => '2013-03-24 16:59:56',
       'updatetime' => '2013-03-24 16:59:56',
-      'author' => '由克',
+      'author' => '麦兜',
     ),
     'pay' => 
     array (
@@ -43,7 +43,7 @@ return array (
       'version' => '1.0',
       'installtime' => '2013-03-24 17:00:36',
       'updatetime' => '2013-03-24 17:00:36',
-      'author' => '由克',
+      'author' => '麦兜',
     ),
     'sms' => 
     array (
@@ -51,7 +51,7 @@ return array (
       'version' => '1.0',
       'installtime' => '2013-03-24 17:41:56',
       'updatetime' => '2013-03-24 17:41:56',
-      'author' => '由克',
+      'author' => '麦兜',
     ),
   ),
 );

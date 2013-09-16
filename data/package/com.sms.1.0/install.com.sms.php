@@ -97,7 +97,7 @@ class install_com_sms{
 		
 		//标识已安装
 		$arr_version = include(KJ_DIR_DATA . "/config/cfg.version.php");
-		$arr_version['components']['sms'] = array('name' => '短信' , 'version' => '1.0' , 'installtime' => date("Y-m-d H:i:s") , 'updatetime' => date("Y-m-d H:i:s") , 'author' => '由克');
+		$arr_version['components']['sms'] = array('name' => '短信' , 'version' => '1.0' , 'installtime' => date("Y-m-d H:i:s") , 'updatetime' => date("Y-m-d H:i:s") , 'author' => '麦兜');
 		$val=var_export($arr_version,true);
 		$val = '<'.'?php'.chr(10).'return '.$val.";";
 		fun_file::file_create(KJ_DIR_DATA . "/config/cfg.version.php",$val,1);

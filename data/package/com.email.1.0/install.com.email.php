@@ -96,7 +96,7 @@ class install_com_email{
 		
 		//标识已安装
 		$arr = include(KJ_DIR_DATA . "/config/cfg.version.php");
-		$arr['components']['email'] = array('name' => '邮件' , 'version' => '1.0' , 'installtime' => date("Y-m-d H:i:s") , 'updatetime' => date("Y-m-d H:i:s") , 'author' => '由克');
+		$arr['components']['email'] = array('name' => '邮件' , 'version' => '1.0' , 'installtime' => date("Y-m-d H:i:s") , 'updatetime' => date("Y-m-d H:i:s") , 'author' => '麦兜');
 		$val=var_export($arr,true);
 		$val = '<'.'?php'.chr(10).'return '.$val.";";
 		fun_file::file_create(KJ_DIR_DATA . "/config/cfg.version.php",$val,1);
