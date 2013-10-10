@@ -169,7 +169,7 @@ function setval(s){
 <script src="/webcss/common/js/kj.pic.js"></script>
 <table class="me_table" id="id_table" cellpadding=0 cellspacing=0><tr><td>
 <div class="header">
-	<div class="x_logo" id="id_login_div"><a href="<?php echo cls_config::get("dirpath","base");?>/" target="_blank"><img src="/webcss/admin/images/logo.png"></a><br>订&nbsp;&nbsp;&nbsp;&nbsp;餐</div>
+	<div class="x_logo" id="id_login_div"><a href="<?php echo cls_config::get("dirpath","base");?>/" target="_blank"><img width="120px" height="40px" src="/webcss/admin/images/logo.png"></a><br>订&nbsp;&nbsp;&nbsp;&nbsp;餐</div>
 	<div class="x_info a_1" id="id_info_div">
 		<li>
 		<span style="float:left"><label><input type="checkbox" name="hide_left" value="1" style="margin:0px;padding:0px" id="id_hide_left" onclick="thisjs.hide_left(this.checked);"<?php if($hide_left){?> checked<?php }?>>&nbsp;隐藏左栏</label></span>
