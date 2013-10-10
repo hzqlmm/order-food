@@ -68,9 +68,6 @@ kj.onload(function(){
 	thisjs.hide_left(1);
 	<?php }?>
 	me_resize();
-	<?php if(empty($hide_guide) && $this_limit->chk_act("guide",'index','index')){?>
-		thisjs.klkkdj_open('开店向导','app_act=guide&app=service');
-	<?php }?>
 });
 //浏览器改变大小时调整大小
 kj.onresize(function() {
@@ -175,16 +172,6 @@ function setval(s){
 	<div class="x_logo" id="id_login_div"><a href="<?php echo cls_config::get("dirpath","base");?>/" target="_blank"><img src="/webcss/admin/images/logo.png"></a><br>订&nbsp;&nbsp;&nbsp;&nbsp;餐</div>
 	<div class="x_info a_1" id="id_info_div">
 		<li>
-		<?php if($this_limit->chk_act("help",'index','index')){?>
-		<span style="float:left"><img src="/webcss/admin/images/pic_1.gif"></span>
-		<span style="float:left">&nbsp;<a href="javascript:thisjs.klkkdj_open('帮助中心','app_act=help&app=service');">帮助中心</a>&nbsp;&nbsp;</span>
-		<?php }?>
-		<?php if($this_limit->chk_act("guide",'index','index')){?>
-		<span style="float:left"><img src="/webcss/admin/images/pic_2.gif"></span><span style="float:left">&nbsp;<a href="javascript:thisjs.klkkdj_open('开店向导','app_act=guide&app=service');">开店向导</a>&nbsp;&nbsp;</span>
-		<?php }?>
-		<?php if($this_limit->chk_act("msg",'index','index')){?>
-		<span style="float:left"><img src="/webcss/admin/images/pic_3.gif"></span><span style="float:left">&nbsp;<a href="javascript:thisjs.klkkdj_open('意见反馈','app_act=msg&app=service');">意见反馈</a>&nbsp;&nbsp;</span>
-		<?php }?>
 		<span style="float:left"><label><input type="checkbox" name="hide_left" value="1" style="margin:0px;padding:0px" id="id_hide_left" onclick="thisjs.hide_left(this.checked);"<?php if($hide_left){?> checked<?php }?>>&nbsp;隐藏左栏</label></span>
 		</li>
 		<li>
